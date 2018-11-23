@@ -1,7 +1,6 @@
 package com.shenl.androidTest;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.shenl.utils.activity.BaseActivity;
 
