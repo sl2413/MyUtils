@@ -1,10 +1,8 @@
 package com.shenl.utils.http;
 
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -21,10 +19,11 @@ public class HttpConnect {
 	 */
 	public static void getConnect(RequestParams params,Callback.CommonCallback<?> callBack){
 		params.setCharset("utf-8");
+		params.setConnectTimeout(1000*5);
 		x.http().get(params, callBack);
 	}
 	/**
-	 * TODO 功能：初始化数据专用
+	 * TODO 功能：post请求
 	 * 
 	 * @param：
 	 * 		params:  网络请求地址
@@ -34,6 +33,7 @@ public class HttpConnect {
 	 */
 	public static void postConnect(RequestParams params,Callback.CommonCallback<?> callBack){
 		params.setCharset("utf-8");
+        params.setConnectTimeout(1000*5);
 		x.http().post(params,callBack);
 	}
 
