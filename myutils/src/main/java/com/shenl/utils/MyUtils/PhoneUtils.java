@@ -3,6 +3,7 @@ package com.shenl.utils.MyUtils;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,6 +12,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.telephony.PhoneNumberUtils;
@@ -19,7 +22,13 @@ import android.telephony.TelephonyManager;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.shenl.utils.activity.BaseActivity;
+import com.shenl.utils.bean.ContactsInfo;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PhoneUtils {
     /**
@@ -339,5 +348,81 @@ public class PhoneUtils {
             mCursor.close();
         }
         return phoneResult;
+    }
+
+    /**
+     * TODO : 获取手机联系人
+     * 参数说明 :
+     * 作者 : shenl
+     * 创建日期 : 2018/11/25
+     * @return :
+     */
+    public static List<ContactsInfo> getAllContacts(Context context){
+        List<ContactsInfo> list = new ArrayList<ContactsInfo>();
+        //1.获取的内容解析者
+        ContentResolver resolver = context.getContentResolver();
+        //2.获取查询路径
+        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+        //3.查询
+        String[] projection = new String[]{
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.NUMBER,
+                ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+        };
+        //uri : 查询地址
+        //projection : 查询的字段
+        //selection : 查询条件
+        //selectionArgs : 查询条件的参数
+        //sortOrder : 排序
+        Cursor cursor = resolver.query(uri, projection, null, null, null);
+        //4.遍历解析cursor
+        if (cursor!= null) {
+            while(cursor.moveToNext()){
+                //5.获取相应的数据
+                String name = cursor.getString(0);
+                String number = cursor.getString(1);
+                String contactid = cursor.getString(2);
+                //6.保存到bean类中
+                ContactsInfo contactsInfo = new ContactsInfo();
+                contactsInfo.name = name;
+                contactsInfo.number = number;
+                contactsInfo.contactid = contactid;
+                //7.添加到集合中
+                list.add(contactsInfo);
+            }
+        }
+        //8.关闭cursor
+        cursor.close();
+        return list;
+    }
+
+    /**
+     * TODO : 获取手机联系人的头像
+     * 参数说明 : contactid: 获取到获取人的ID ContactsInfo.getcontactid
+     * 作者 : shenl
+     * 创建日期 : 2018/11/25
+     * @return :
+     */
+    public static Bitmap getContactsPhoto(Context context, String contactid){
+        //1.获取内容解析者
+        ContentResolver resolver = context.getContentResolver();
+        //2.获取联系人头像的uri
+        //content://contacts/101
+        Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, contactid);
+        //3.获取头像,返回的流信息
+        //参数1:内容解析者
+        //参数2:头像路径
+        InputStream in = ContactsContract.Contacts.openContactPhotoInputStream(resolver, uri);
+        //4.将流转化成bitmap
+        Bitmap bitmap = BitmapFactory.decodeStream(in);
+        //5.关流操作
+        if (in != null) {
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return bitmap;
     }
 }
