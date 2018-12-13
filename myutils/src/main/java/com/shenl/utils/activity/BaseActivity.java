@@ -1,6 +1,9 @@
 package com.shenl.utils.activity;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -186,6 +189,22 @@ public abstract class BaseActivity extends Activity {
             rootView.setFitsSystemWindows(true);
             rootView.setClipToPadding(true);
         }
+    }
+
+    /**
+     * TODO 功能：fragment选择器
+     *
+     * 参数说明:
+     * res: 资源文件，布局中fragement的容器
+     * fragment: 要放置的fragment
+     * 作    者:   沈 亮
+     * 创建时间:   2018/12/13
+     */
+    public void Fragment_Secter(int res,Fragment fragment) {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction bt = fm.beginTransaction();
+        bt.replace(res, fragment);
+        bt.commit();
     }
 
     //动态需要请求的权限 ,例如下代码
