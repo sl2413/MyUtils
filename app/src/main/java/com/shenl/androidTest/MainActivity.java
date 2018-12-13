@@ -1,8 +1,11 @@
 package com.shenl.androidTest;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.shenl.utils.activity.BaseActivity;
+
 public class MainActivity extends BaseActivity {
 
 
@@ -17,6 +20,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
+
     }
 
     @Override

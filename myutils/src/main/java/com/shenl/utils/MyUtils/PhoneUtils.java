@@ -22,7 +22,6 @@ import android.telephony.TelephonyManager;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.shenl.utils.activity.BaseActivity;
 import com.shenl.utils.bean.ContactsInfo;
 
 import java.io.IOException;
