@@ -7,6 +7,13 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+/**
+ * TODO 功能：网络请求工具类
+ *　此类需配合　xUtils3.jar　使用
+ * 参数说明:
+ * 作    者:   沈 亮
+ * 创建时间:   2018/12/14
+ */
 public class HttpConnect {
 	/**
 	 * TODO 功能：get请求

@@ -13,6 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * TODO 功能：json工具
+ *　此工具类需配合Gson.jar包使用
+ * 参数说明:
+ * 作    者:   沈 亮
+ * 创建时间:   2018/12/14
+ */
 public class JsonUtil {
 
 	/**
