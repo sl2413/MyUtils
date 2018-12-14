@@ -33,6 +33,5 @@ dependencies {
     api files('libs/xUtils3.jar')
     api files('libs/gson-2.2.1.jar')
     implementation files('libs/glide-3.6.0.jar')
-    implementation files('libs/core.jar')
-    implementation files('libs/zxingjar-1.1.jar')
+    implementation files('libs/core-3.3.3.jar')
 }

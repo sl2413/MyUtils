@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import com.shenl.utils.MyCallback.PermissionListener;
 import com.shenl.utils.MyUtils.PageUtils;
 import com.shenl.utils.application.AppManager;
+import com.shenl.utils.zxing.android.CaptureActivity;
+import com.shenl.utils.zxing.common.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -193,14 +195,14 @@ public abstract class BaseActivity extends Activity {
 
     /**
      * TODO 功能：fragment选择器
-     *
+     * <p>
      * 参数说明:
      * res: 资源文件，布局中fragement的容器
      * fragment: 要放置的fragment
      * 作    者:   沈 亮
      * 创建时间:   2018/12/13
      */
-    public void Fragment_Secter(int res,Fragment fragment) {
+    public void Fragment_Secter(int res, Fragment fragment) {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction bt = fm.beginTransaction();
         bt.replace(res, fragment);
@@ -246,16 +248,26 @@ public abstract class BaseActivity extends Activity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        //返回的权限列表
         List<String> list = new ArrayList<>();
         for (int i = 0; i < grantResults.length; i++) {
             if (grantResults[i] == -1) {
                 list.add(permissions[i]);
             }
         }
-        if (!list.isEmpty()) {
-            listener.onDenied(list);
-        } else {
-            listener.onGranted();
+        //扫一扫功能权限列表
+        if (requestCode == 1) {
+            if (list.isEmpty()) {
+                Intent intent = new Intent(BaseActivity.this, CaptureActivity.class);
+                startActivityForResult(intent,1);
+            }
+        }
+        if (requestCode == 2) {
+            if (!list.isEmpty()) {
+                listener.onDenied(list);
+            } else {
+                listener.onGranted();
+            }
         }
     }
 }
