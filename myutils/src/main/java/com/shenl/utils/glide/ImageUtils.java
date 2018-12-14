@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide;
  * 作    者:   沈 亮
  * 创建时间:   2018/12/14
  */
-public class GlideUtils {
+public class ImageUtils {
 
     /**
      * TODO 功能：为imageView设置bitmap图片，图片来源可以是网络或本地
