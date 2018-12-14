@@ -2,7 +2,6 @@ package com.shenl.utils.glide;
 
 import android.content.Context;
 import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
 
 /**
