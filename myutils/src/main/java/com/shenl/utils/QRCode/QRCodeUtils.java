@@ -1,342 +1,121 @@
 package com.shenl.utils.QRCode;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 
-import java.util.Hashtable;
+import com.shenl.utils.zxing.android.CaptureActivity;
+import com.shenl.utils.zxing.bean.ZxingConfig;
+import com.shenl.utils.zxing.common.Constant;
+import com.shenl.utils.zxing.encode.CodeCreator;
+
+import java.util.ArrayList;
 
 /**
  * TODO 功能：操作二维码工具类
- *　此工具类需配合　zxingjar-1.1.jar　core.jar　使用
+ * 　此工具类需配合　core-3.3.3.jar　使用
  * 参数说明:
  * 作    者:   沈 亮
  * 创建时间:   2018/12/14
  */
 public class QRCodeUtils {
-    private static int IMAGE_HALFWIDTH = 50;
 
     /**
-     * TODO 功能：生成二维码，默认大小为500*500
-     *
+     * TODO 功能：扫描二维码
+     * <p>
      * 参数说明:   text => 要生成二维码的字符串
      * 作    者:   沈 亮
      * 创建时间:   2018/12/14
      */
+    public static void ReadQRCode(Activity activity) {
+        ReadQRCode(activity, null);
+    }
+
+    /**
+     * TODO 功能：扫描二维码,可对扫描页面进行设置
+     * <p>
+     * 参数说明:
+     * ZxingConfig config = new ZxingConfig();<p>
+     * config.setPlayBeep(true);//是否播放扫描声音 默认为true<p>
+     * config.setShake(true);//是否震动  默认为true<p>
+     * config.setDecodeBarCode(true);//是否扫描条形码 默认为true<p>
+     * config.setReactColor(R.color.colorAccent);//设置扫描框四个角的颜色 默认为白色<p>
+     * config.setFrameLineColor(R.color.colorAccent);//设置扫描框边框颜色 默认无色<p>
+     * config.setScanLineColor(R.color.colorAccent);//设置扫描线的颜色 默认白色<p>
+     * config.setFullScreenScan(false);//是否全屏扫描  默认为true  设为false则只会在扫描框中扫描<p>
+     * 作    者:   沈 亮
+     * 创建时间:   2018/12/14
+     */
+    public static void ReadQRCode(Activity activity, ZxingConfig config) {
+        String[] PERMISSIONS_STORAGE = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE};
+        ArrayList<String> list = new ArrayList<>();
+        //判断android版本
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            //遍历权限, 找出未开启的权限
+            for (int i = 0; i < PERMISSIONS_STORAGE.length; i++) {
+                if (ActivityCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[i]) != PackageManager.PERMISSION_GRANTED) {
+                    list.add(PERMISSIONS_STORAGE[i]);
+                }
+            }
+            if (!list.isEmpty()) {
+                //添加请求权限
+                String[] PERMISSIONS = new String[list.size()];
+                for (int i = 0; i < list.size(); i++) {
+                    PERMISSIONS[i] = list.get(i);
+                }
+                //发送权限请求
+                ActivityCompat.requestPermissions(activity, PERMISSIONS, 1);
+            } else {
+                Intent intent = new Intent(activity, CaptureActivity.class);
+                if (config != null) {
+                    intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
+                }
+                activity.startActivityForResult(intent, 1);
+            }
+        }
+    }
+
+
+    /**
+     * TODO 功能：生成二维码，默认大小为500*500
+     * <p>
+     * 参数说明:
+     * text => 要生成二维码的字符串
+     * 作    者:   沈 亮
+     * 创建时间:   2018/12/14
+     */
     public static Bitmap createQRCode(String text) {
-        return createQRCode(text, 500);
-    }
-
-    /**
-     * TODO 功能：生成二维码,自定义二维码的大小
-     *
-     * 参数说明:
-     * text => 要生成二维码的字符串
-     * size => 要生成二维码的大小
-     * 作    者:   沈 亮
-     * 创建时间:   2018/12/14
-     */
-    public static Bitmap createQRCode(String text, int size) {
-        try {
-            Hashtable<EncodeHintType, String> hints = new Hashtable<>();
-            hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
-            BitMatrix bitMatrix = new QRCodeWriter().encode(text,
-                    BarcodeFormat.QR_CODE, size, size, hints);
-            int[] pixels = new int[size * size];
-            for (int y = 0; y < size; y++) {
-                for (int x = 0; x < size; x++) {
-                    if (bitMatrix.get(x, y)) {
-                        pixels[y * size + x] = 0xff000000;
-                    } else {
-                        pixels[y * size + x] = 0xffffffff;
-                    }
-                }
-            }
-            Bitmap bitmap = Bitmap.createBitmap(size, size,
-                    Bitmap.Config.ARGB_8888);
-            bitmap.setPixels(pixels, 0, size, 0, 0, size, size);
-            return bitmap;
-        } catch (WriterException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * TODO 功能：图片的颜色代替黑色的二维码
-     *
-     * 参数说明:
-     * text => 要生成二维码的字符串
-     * size => 要生成二维码的大小
-     * mBitmap　=> 传入的bitmap图片
-     * 作    者:   沈 亮
-     * 创建时间:   2018/12/14
-     */
-    public static Bitmap createQRCodeWithLogo2(String text, int size, Bitmap mBitmap) {
-        try {
-            IMAGE_HALFWIDTH = size / 10;
-            Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
-            hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
-
-            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
-            BitMatrix bitMatrix = new QRCodeWriter().encode(text,
-                    BarcodeFormat.QR_CODE, size, size, hints);
-
-            //将logo图片按martix设置的信息缩放
-            mBitmap = Bitmap.createScaledBitmap(mBitmap, size, size, false);
-
-            int[] pixels = new int[size * size];
-            int color = 0xffffffff;
-            for (int y = 0; y < size; y++) {
-                for (int x = 0; x < size; x++) {
-                    if (bitMatrix.get(x, y)) {
-                        pixels[y * size + x] = mBitmap.getPixel(x, y);
-                    } else {
-                        pixels[y * size + x] = color;
-                    }
-
-                }
-            }
-            Bitmap bitmap = Bitmap.createBitmap(size, size,
-                    Bitmap.Config.ARGB_8888);
-            bitmap.setPixels(pixels, 0, size, 0, 0, size, size);
-            return bitmap;
-        } catch (WriterException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * TODO 功能：图片作为底色
-     *
-     * 参数说明:
-     * text => 要生成二维码的字符串
-     * size => 要生成二维码的大小
-     * mBitmap　=> 传入的bitmap图片
-     * 作    者:   沈 亮
-     * 创建时间:   2018/12/14
-     */
-    public static Bitmap createQRCodeWithLogo3(String text, int size, Bitmap mBitmap) {
-        try {
-            IMAGE_HALFWIDTH = size / 10;
-            Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
-            hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
-
-            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
-            BitMatrix bitMatrix = new QRCodeWriter().encode(text,
-                    BarcodeFormat.QR_CODE, size, size, hints);
-
-            //将logo图片按martix设置的信息缩放
-            mBitmap = Bitmap.createScaledBitmap(mBitmap, size, size, false);
-
-            int[] pixels = new int[size * size];
-            int color = 0xfff92736;
-            for (int y = 0; y < size; y++) {
-                for (int x = 0; x < size; x++) {
-                    if (bitMatrix.get(x, y)) {
-                        pixels[y * size + x] = color;
-                    } else {
-                        pixels[y * size + x] = mBitmap.getPixel(x, y) & 0x66ffffff;
-                    }
-                }
-            }
-            Bitmap bitmap = Bitmap.createBitmap(size, size,
-                    Bitmap.Config.ARGB_8888);
-            bitmap.setPixels(pixels, 0, size, 0, 0, size, size);
-            return bitmap;
-        } catch (WriterException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * TODO 功能：比方法2的颜色黑一些
-     *
-     * 参数说明:
-     * 作    者:   沈 亮
-     * 创建时间:   2018/12/14
-     */
-    public static Bitmap createQRCodeWithLogo4(String text, int size, Bitmap mBitmap) {
-        try {
-            IMAGE_HALFWIDTH = size / 10;
-            Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
-            hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
-
-            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
-            BitMatrix bitMatrix = new QRCodeWriter().encode(text,
-                    BarcodeFormat.QR_CODE, size, size, hints);
-
-            //将logo图片按martix设置的信息缩放
-            mBitmap = Bitmap.createScaledBitmap(mBitmap, size, size, false);
-
-            int[] pixels = new int[size * size];
-            boolean flag = true;
-            for (int y = 0; y < size; y++) {
-                for (int x = 0; x < size; x++) {
-                    if (bitMatrix.get(x, y)) {
-                        if (flag) {
-                            flag = false;
-                            pixels[y * size + x] = 0xff000000;
-                        } else {
-                            pixels[y * size + x] = mBitmap.getPixel(x, y);
-                            flag = true;
-                        }
-                    } else {
-                        pixels[y * size + x] = 0xffffffff;
-                    }
-                }
-            }
-            Bitmap bitmap = Bitmap.createBitmap(size, size,
-                    Bitmap.Config.ARGB_8888);
-            bitmap.setPixels(pixels, 0, size, 0, 0, size, size);
-            return bitmap;
-        } catch (WriterException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return createQRCode(text, null);
     }
 
     /**
      * TODO 功能：生成带logo的二维码
-     *
+     * <p>
      * 参数说明:
      * text => 要生成二维码的字符串
-     * size => 要生成二维码的大小
-     * mBitmap　=> 传入的bitmap图片做为二维码的logo
+     * logo => 二维码的logo
      * 作    者:   沈 亮
      * 创建时间:   2018/12/14
      */
-    public static Bitmap createQRCodeWithLogo5(String text, int size, Bitmap mBitmap) {
-        try {
-            IMAGE_HALFWIDTH = size / 10;
-            Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
-            hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
-
-            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
-            BitMatrix bitMatrix = new QRCodeWriter().encode(text,
-                    BarcodeFormat.QR_CODE, size, size, hints);
-
-            //将logo图片按martix设置的信息缩放
-            mBitmap = Bitmap.createScaledBitmap(mBitmap, size, size, false);
-
-            int width = bitMatrix.getWidth();//矩阵高度
-            int height = bitMatrix.getHeight();//矩阵宽度
-            int halfW = width / 2;
-            int halfH = height / 2;
-
-            Matrix m = new Matrix();
-            float sx = (float) 2 * IMAGE_HALFWIDTH / mBitmap.getWidth();
-            float sy = (float) 2 * IMAGE_HALFWIDTH
-                    / mBitmap.getHeight();
-            m.setScale(sx, sy);
-            //设置缩放信息
-            //将logo图片按martix设置的信息缩放
-            mBitmap = Bitmap.createBitmap(mBitmap, 0, 0,
-                    mBitmap.getWidth(), mBitmap.getHeight(), m, false);
-
-            int[] pixels = new int[size * size];
-            for (int y = 0; y < size; y++) {
-                for (int x = 0; x < size; x++) {
-                    if (x > halfW - IMAGE_HALFWIDTH && x < halfW + IMAGE_HALFWIDTH
-                            && y > halfH - IMAGE_HALFWIDTH
-                            && y < halfH + IMAGE_HALFWIDTH) {
-                        //该位置用于存放图片信息
-                        //记录图片每个像素信息
-                        pixels[y * width + x] = mBitmap.getPixel(x - halfW
-                                + IMAGE_HALFWIDTH, y - halfH + IMAGE_HALFWIDTH);
-                    } else {
-                        if (bitMatrix.get(x, y)) {
-                            pixels[y * size + x] = 0xff37b19e;
-                        } else {
-                            pixels[y * size + x] = 0xffffffff;
-                        }
-                    }
-                }
-            }
-            Bitmap bitmap = Bitmap.createBitmap(size, size,
-                    Bitmap.Config.ARGB_8888);
-            bitmap.setPixels(pixels, 0, size, 0, 0, size, size);
-            return bitmap;
-        } catch (WriterException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public static Bitmap createQRCode(String text, Bitmap logo) {
+        return createQRCode(text, 500, logo);
     }
 
     /**
-     * TODO 功能：修改三个顶角颜色的，带logo的二维码
-     *
+     * TODO 功能：自定义二维码的大小与logo
+     * <p>
      * 参数说明:
+     * text => 要生成二维码的字符串
+     * size => 二维码的大小
+     * logo => 二维码的logo
      * 作    者:   沈 亮
      * 创建时间:   2018/12/14
      */
-    public static Bitmap createQRCodeWithLogo6(String text, int size, Bitmap mBitmap) {
-        try {
-            IMAGE_HALFWIDTH = size / 10;
-            Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
-            hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
-            /*
-             * 设置容错级别，默认为ErrorCorrectionLevel.L
-             * 因为中间加入logo所以建议你把容错级别调至H,否则可能会出现识别不了
-             */
-            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
-            BitMatrix bitMatrix = new QRCodeWriter().encode(text,
-                    BarcodeFormat.QR_CODE, size, size, hints);
-
-            //将logo图片按martix设置的信息缩放
-            mBitmap = Bitmap.createScaledBitmap(mBitmap, size, size, false);
-
-            int width = bitMatrix.getWidth();//矩阵高度
-            int height = bitMatrix.getHeight();//矩阵宽度
-            int halfW = width / 2;
-            int halfH = height / 2;
-
-            Matrix m = new Matrix();
-            float sx = (float) 2 * IMAGE_HALFWIDTH / mBitmap.getWidth();
-            float sy = (float) 2 * IMAGE_HALFWIDTH
-                    / mBitmap.getHeight();
-            m.setScale(sx, sy);
-            //设置缩放信息
-            //将logo图片按martix设置的信息缩放
-            mBitmap = Bitmap.createBitmap(mBitmap, 0, 0,
-                    mBitmap.getWidth(), mBitmap.getHeight(), m, false);
-
-            int[] pixels = new int[size * size];
-            for (int y = 0; y < size; y++) {
-                for (int x = 0; x < size; x++) {
-                  if (x > halfW - IMAGE_HALFWIDTH && x < halfW + IMAGE_HALFWIDTH
-                            && y > halfH - IMAGE_HALFWIDTH
-                            && y < halfH + IMAGE_HALFWIDTH) {
-                        //该位置用于存放图片信息
-                        //记录图片每个像素信息
-                        pixels[y * width + x] = mBitmap.getPixel(x - halfW
-                                + IMAGE_HALFWIDTH, y - halfH + IMAGE_HALFWIDTH);
-                    } else {
-                        if (bitMatrix.get(x, y)) {
-                            pixels[y * size + x] = 0xff111111;
-                            if(x<115&&(y<115||y>=size-115)||(y<115&&x>=size-115)){
-                                pixels[y * size + x] = 0xfff92736;
-                            }
-                        } else {
-                            pixels[y * size + x] = 0xffffffff;
-                        }
-                    }
-                }
-            }
-            Bitmap bitmap = Bitmap.createBitmap(size, size,
-                    Bitmap.Config.ARGB_8888);
-            bitmap.setPixels(pixels, 0, size, 0, 0, size, size);
-            return bitmap;
-        } catch (WriterException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public static Bitmap createQRCode(String text, int size, Bitmap logo) {
+        return CodeCreator.createQRCode(text, size, size, logo);
     }
 }

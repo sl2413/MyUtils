@@ -1,12 +1,13 @@
 package com.shenl.androidTest;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.shenl.utils.activity.BaseActivity;
 import com.shenl.utils.activity.SplashActivity;
 
 public class MainActivity extends BaseActivity {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
