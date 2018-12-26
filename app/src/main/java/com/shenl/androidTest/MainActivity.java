@@ -1,11 +1,8 @@
 package com.shenl.androidTest;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 import com.shenl.utils.activity.BaseActivity;
-import com.shenl.utils.activity.SplashActivity;
 
 public class MainActivity extends BaseActivity {
 
@@ -20,9 +17,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        Bundle bundle = new Bundle();
-        bundle.putInt("view", R.layout.activity_main);
-        openActivity(SplashActivity.class,bundle);
+
     }
 
     @Override
