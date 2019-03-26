@@ -2,7 +2,11 @@ package com.shenl.androidTest;
 
 import android.os.Bundle;
 
+import com.shenl.utils.MyCallback.HttpCallBack;
 import com.shenl.utils.activity.BaseActivity;
+import com.shenl.utils.http.HttpConnect;
+
+import org.xutils.http.RequestParams;
 
 public class MainActivity extends BaseActivity {
 
@@ -17,7 +21,14 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        RequestParams params = HttpUrl.getParams();
+        params.setUri("");
+        HttpConnect.getConnect(params, new HttpCallBack(MainActivity.this) {
+            @Override
+            public void onSuccess(String s) {
 
+            }
+        });
     }
 
     @Override

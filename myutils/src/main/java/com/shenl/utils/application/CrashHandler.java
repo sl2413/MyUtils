@@ -108,6 +108,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
         collectDeviceInfo(mContext);
         //拿到错误文件路径
         path = saveCrashInfo2File(ex);
+        PageUtils.showLog("错误信息路径＝＝》"+path);
         return true;
     }
 

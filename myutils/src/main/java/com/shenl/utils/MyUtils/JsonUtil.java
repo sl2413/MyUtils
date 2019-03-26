@@ -78,6 +78,7 @@ public class JsonUtil {
 	 * TODO 功能：把json字符串变成集合
 	 * 
 	 * @param：
+	 * type ==> new TypeToken<List<T>>(){}.getType()
 	 * @author：沈 亮
 	 * @Data：上午10:16:33
 	 */

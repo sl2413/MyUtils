@@ -20,7 +20,7 @@ public class HttpConnect {
 	 * 
 	 * @param：
 	 * 		params:  网络请求地址
-	 * 		callBack:  回调函数   new RequestCallBack<T> 
+	 * 		callBack:  回调函数   new HttpCallBack
 	 * @author：沈 亮
 	 * @Data：下午3:09:23
 	 */
@@ -34,7 +34,7 @@ public class HttpConnect {
 	 * 
 	 * @param：
 	 * 		params:  网络请求地址
-	 * 		callBack:  回调函数   new RequestCallBack<T> 
+	 * 		callBack:  回调函数   new HttpCallBack
 	 * @author：沈 亮
 	 * @Data：下午3:09:23
 	 */
