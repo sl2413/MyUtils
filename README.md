@@ -13,6 +13,6 @@ allprojects {
 ## step2:在工程中添加依赖
 ```
 dependencies {
-	   implementation 'com.github.sl2413:myutils:1.0.1'
+	   implementation 'com.github.sl2413:myutils:1.0.2'
 }
 ```
