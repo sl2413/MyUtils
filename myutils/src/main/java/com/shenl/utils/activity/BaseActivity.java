@@ -118,6 +118,9 @@ public abstract class BaseActivity extends Activity {
         Intent intent = new Intent(this, targetActivityClass);
         if (bundle != null) {
             intent.putExtras(bundle);
+            //接收
+            //Bundle extras = intent.getExtras();
+            //String key = (String) extras.get("key");
         }
         startActivity(intent);
     }

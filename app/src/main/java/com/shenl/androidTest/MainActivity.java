@@ -1,12 +1,21 @@
 package com.shenl.androidTest;
 
+import android.Manifest;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.graphics.Palette;
+import android.view.View;
+import android.widget.ImageView;
 
-import com.shenl.utils.MyCallback.HttpCallBack;
+import com.shenl.utils.Image.ImageUtils;
+import com.shenl.utils.MyCallback.PermissionListener;
+import com.shenl.utils.MyUtils.PageUtils;
 import com.shenl.utils.activity.BaseActivity;
-import com.shenl.utils.http.HttpConnect;
 
-import org.xutils.http.RequestParams;
 
 public class MainActivity extends BaseActivity {
 
@@ -14,18 +23,26 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initView();
-        initData();
-        initEvent();
+
+        String[] PERMISSIONS_STORAGE = {
+                           Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE };
+        getPermissions(MainActivity.this, PERMISSIONS_STORAGE, new PermissionListener(MainActivity.this) {
+            @Override
+            public void onGranted() {
+                initView();
+                initData();
+                initEvent();
+            }
+        });
     }
 
     @Override
     public void initView() {
-        RequestParams params = HttpUrl.getParams();
-        params.setUri("");
-        HttpConnect.getConnect(params, new HttpCallBack(MainActivity.this) {
+        findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(String s) {
+            public void onClick(View view) {
+
 
             }
         });

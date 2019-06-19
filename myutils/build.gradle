@@ -33,6 +33,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     api files('libs/xUtils3.jar')
     api files('libs/gson-2.2.1.jar')
-    implementation files('libs/glide-3.6.0.jar')
-    implementation files('libs/core-3.3.3.jar')
+    api files('libs/glide-3.6.0.jar')
+    api files('libs/core-3.3.3.jar')
+    api 'com.android.support:palette-v7:25.3.1'
 }
