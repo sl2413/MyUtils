@@ -10,11 +10,14 @@ import android.util.Log;
 import android.widget.Toast;
 import com.shenl.utils.MyCallback.DialogCallBack;
 
+import java.util.Map;
+
 
 public class PageUtils {
 
     //是否打印log
     public static final boolean PrintFalg = true;
+    private static final String SUCCESS = "0000";
     //自定义吐司
     private static Toast toast = null;
 
@@ -121,17 +124,11 @@ public class PageUtils {
      * @author：沈 亮
      * @Data：下午1:44:09
      */
-    public static Boolean setCode(Activity activity, String json) {
-        String code = JsonUtil.getFieldValue(json, "code");
-        String msg = JsonUtil.getFieldValue(json, "message");
-        if ("0000".equals(code)) {
-            return true;
+    public static void setCode(Activity activity, Map<String,String> msgCode,String code) {
+        //msgCode.put("0000","成功");
+        String msg = msgCode.get(code);
+        if (!SUCCESS.equals(msg)){
+            showToast(activity, msg);
         }
-        if ("500".equals(code)) {
-            showToast(activity, "Server Error");
-            return false;
-        }
-        showToast(activity, msg);
-        return false;
     }
 }

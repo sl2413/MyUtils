@@ -1,60 +1,70 @@
 package com.shenl.androidTest;
 
-import android.Manifest;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.graphics.Palette;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.ImageView;
 
-import com.shenl.utils.Image.ImageUtils;
-import com.shenl.utils.MyCallback.PermissionListener;
-import com.shenl.utils.MyUtils.PageUtils;
 import com.shenl.utils.activity.BaseActivity;
+import com.shenl.utils.superlibrary.adapter.BaseViewHolder;
+import com.shenl.utils.superlibrary.adapter.SuperBaseAdapter;
+import com.shenl.utils.superlibrary.recycleview.SuperRecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends BaseActivity {
+
+    private SuperRecyclerView sup_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        String[] PERMISSIONS_STORAGE = {
-                           Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE };
-        getPermissions(MainActivity.this, PERMISSIONS_STORAGE, new PermissionListener(MainActivity.this) {
-            @Override
-            public void onGranted() {
-                initView();
-                initData();
-                initEvent();
-            }
-        });
+        initView();
+        initData();
+        initEvent();
     }
 
     @Override
     public void initView() {
-        findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
+        sup_list = findViewById(R.id.sup_list);
 
-            }
-        });
     }
 
     @Override
     public void initData() {
-
+        ArrayList<String> list = new ArrayList<>();
+        for (int i=0;i<20;i++){
+            list.add("条目"+i);
+        }
+        LinearLayoutManager manager = new LinearLayoutManager(MainActivity.this);
+        sup_list.setLayoutManager(manager);
+        sup_list.setRefreshEnabled(true);
+        sup_list.setAdapter(new myAdapter(MainActivity.this,list));
     }
 
     @Override
     public void initEvent() {
 
+    }
+
+    class myAdapter extends SuperBaseAdapter<String>{
+
+        public myAdapter(Context context, List<String> data) {
+            super(context, data);
+        }
+
+        @Override
+        protected void convert(BaseViewHolder holder, String item, int position) {
+            holder.setText(R.id.tv_text,item);
+        }
+
+        @Override
+        protected int getItemViewLayoutId(int position, String item) {
+            return R.layout.item;
+        }
     }
 }
