@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initData() {
         ArrayList<String> list = new ArrayList<>();
-        for (int i=0;i<20;i++){
+        for (int i=0;i<50;i++){
             list.add("条目"+i);
         }
         LinearLayoutManager manager = new LinearLayoutManager(MainActivity.this);
