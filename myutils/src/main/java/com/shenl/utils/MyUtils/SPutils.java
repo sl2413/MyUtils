@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 public class SPutils {
 	
-	private static final String CACHE_FILE_NAME = "NEUQSOFT";
+	private static final String CACHE_FILE_NAME = "LOCAL";
 	private static SharedPreferences mSharedPreferences;
 	
 	/**
@@ -71,11 +71,11 @@ public class SPutils {
 	 * @author：沈 亮
 	 * @Data：上午10:18:10
 	 */
-	public static void putInt(Context context, int key, int value) {
+	public static void putInt(Context context, String key, int value) {
 		if(mSharedPreferences == null) {
 			mSharedPreferences = context.getSharedPreferences(CACHE_FILE_NAME, Context.MODE_PRIVATE);
 		}
-		mSharedPreferences.edit().putInt(key+"", value).commit();
+		mSharedPreferences.edit().putInt(key, value).commit();
 	}
 
 	/**
@@ -85,11 +85,11 @@ public class SPutils {
 	 * @author：沈 亮
 	 * @Data：上午10:18:23
 	 */
-	public static int getInt(Context context, int key, int value) {
+	public static int getInt(Context context, String key, int value) {
 		if(mSharedPreferences == null) {
 			mSharedPreferences = context.getSharedPreferences(CACHE_FILE_NAME, Context.MODE_PRIVATE);
 		}
-		return mSharedPreferences.getInt(key+"", value);
+		return mSharedPreferences.getInt(key, value);
 	}
 
 }

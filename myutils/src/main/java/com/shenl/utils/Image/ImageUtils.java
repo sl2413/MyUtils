@@ -56,14 +56,6 @@ public class ImageUtils {
         return ((BitmapDrawable)iv.getDrawable()).getBitmap();
     }
 
-                /*Palette palette = Palette.generate(bitmap);
-                PageUtils.showLog(palette.getVibrantColor(Color.BLACK)+"");
-                PageUtils.showLog(palette.getDarkVibrantColor(Color.BLACK)+"");
-                PageUtils.showLog(palette.getLightVibrantColor(Color.BLACK)+"");
-                PageUtils.showLog(palette.getMutedColor(Color.BLACK)+"");
-                PageUtils.showLog(palette.getDarkMutedColor(Color.BLACK)+"");
-                PageUtils.showLog(palette.getLightVibrantColor(Color.BLACK)+"");*/
-
     /**
      * TODO : 获取图片中的颜色
      * 参数说明 :
