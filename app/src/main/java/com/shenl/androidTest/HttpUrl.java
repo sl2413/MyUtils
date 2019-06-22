@@ -23,9 +23,10 @@ public class HttpUrl {
         }
     }
 
-    public static RequestParams getParams() {
+    public static RequestParams getParams(String url){
         RequestParams params = new RequestParams();
-        params.addHeader("", "");
+        params.setUri(IPaddress+url);
+        params.addHeader("","");
         return params;
     }
 }
