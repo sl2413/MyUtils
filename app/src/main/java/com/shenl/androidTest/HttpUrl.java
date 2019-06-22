@@ -1,5 +1,10 @@
 package com.shenl.androidTest;
 
+import android.content.Context;
+
+import com.shenl.utils.MyUtils.JsonUtil;
+import com.shenl.utils.MyUtils.PageUtils;
+
 import org.xutils.http.RequestParams;
 import org.xutils.http.app.ParamsBuilder;
 
@@ -10,16 +15,17 @@ public class HttpUrl {
     public static final String BASE = "http://10.19.92.71:88/";
     public static final String IPaddress = BASE + "auth_oa";
 
-    public static Map<String,String> getMsgCode(){
-        Map<String,String> msgCode = new HashMap<>();
-        msgCode.put("0000","操作成功");
-        msgCode.put("0001","操作失败");
-        return msgCode;
+    public static void getMsgCode(Context context, String json) {
+        String code = JsonUtil.getFieldValue(json, "code");
+        if (!"0".equals(code)) {
+            PageUtils.showToast(context, JsonUtil.getFieldValue(json, "msg"));
+            return;
+        }
     }
 
-    public static RequestParams getParams(){
+    public static RequestParams getParams() {
         RequestParams params = new RequestParams();
-        params.addHeader("","");
+        params.addHeader("", "");
         return params;
     }
 }
