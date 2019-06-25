@@ -2,6 +2,7 @@ package com.shenl.utils.Image;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -9,6 +10,12 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.graphics.Palette;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * TODO 功能：加载网络图片工具类
@@ -99,6 +106,51 @@ public class ImageUtils {
         drawable.draw(canvas);
 
         return bitmap;
+    }
+
+    /**
+     * TODO 功能：通过网络图片url地址转换成bitmap
+     *
+     * 参数说明:
+     * 作    者:   沈 亮
+     * 创建时间:   2019/6/25
+     */
+    public static void UrlToBitmap(final String url, final ImageLoader imageLoader){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                URL imageurl = null;
+                try {
+                    imageurl = new URL(url);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    HttpURLConnection conn = (HttpURLConnection)imageurl.openConnection();
+                    conn.setDoInput(true);
+                    conn.connect();
+                    InputStream is = conn.getInputStream();
+                    Bitmap bitmap = BitmapFactory.decodeStream(is);
+                    //这是一个一步请求，不能直接返回获取，要不然永远为null
+                    //在这里得到BitMap之后记得使用Hanlder或者EventBus传回主线程，不过现在加载图片都是用框架了，很少有转化为Bitmap的需求
+                    is.close();
+                    imageLoader.success(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * TODO 功能：网络图片加载完成回调接口
+     *
+     * 参数说明:
+     * 作    者:   沈 亮
+     * 创建时间:   2019/6/25
+     */
+    interface ImageLoader{
+        void success(Bitmap bitmap);
     }
 
 }
