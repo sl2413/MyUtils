@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.v7.graphics.Palette;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
@@ -130,11 +131,16 @@ public class ImageUtils {
                     conn.setDoInput(true);
                     conn.connect();
                     InputStream is = conn.getInputStream();
-                    Bitmap bitmap = BitmapFactory.decodeStream(is);
+                    final Bitmap bitmap = BitmapFactory.decodeStream(is);
                     //这是一个一步请求，不能直接返回获取，要不然永远为null
                     //在这里得到BitMap之后记得使用Hanlder或者EventBus传回主线程，不过现在加载图片都是用框架了，很少有转化为Bitmap的需求
                     is.close();
-                    imageLoader.success(bitmap);
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            imageLoader.success(bitmap);
+                        }
+                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
