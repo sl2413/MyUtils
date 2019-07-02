@@ -1,16 +1,23 @@
 package com.shenl.utils.MyUtils;
 
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
-import com.shenl.utils.MyCallback.DialogCallBack;
 
-import java.util.Map;
+import com.shenl.utils.MyCallback.DialogCallBack;
+import com.shenl.utils.R;
 
 
 public class PageUtils {
@@ -32,9 +39,9 @@ public class PageUtils {
         if (toast == null) {
             toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
         }
-        if (TextUtils.isEmpty(text)){
+        if (TextUtils.isEmpty(text)) {
             toast.setText("请求超时");
-        }else{
+        } else {
             toast.setText(text);
         }
         toast.show();
@@ -48,7 +55,7 @@ public class PageUtils {
      * @Data：下午2:42:51
      */
     public static void showToast(Context context) {
-        showToast(context,null);
+        showToast(context, null);
     }
 
     /**
@@ -117,18 +124,43 @@ public class PageUtils {
         return AlertDialog;
     }
 
-    /**
-     * TODO 功能：判断服务器发来的状态code
-     *
-     * @param：
-     * @author：沈 亮
-     * @Data：下午1:44:09
-     */
-    public static void setCode(Activity activity, Map<String,String> msgCode,String code) {
-        //msgCode.put("0000","成功");
-        String msg = msgCode.get(code);
-        if (!SUCCESS.equals(msg)){
-            showToast(activity, msg);
-        }
+
+    public static void showNotification(Context context, Bitmap icon,int NotificationId, String title, String content) {
+        //在手机状态栏提示新消息
+        //调用手机提示音
+        Uri uri1 = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Ringtone rt = RingtoneManager.getRingtone(context, uri1);
+        rt.play();
+        //状态栏显示消息
+        NotificationManager manger = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+
+        //android8.0需要创建渠道, 通过渠道显示消息
+        /*if (Build.VERSION.SDK_INT>=26){
+            NotificationChannel channel = new NotificationChannel(PUSH_CHANNEL_ID, PUSH_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+            if (manger != null) {
+                manger.createNotificationChannel(channel);
+            }
+        }*/
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        builder.setTicker(title);
+        builder.setContentTitle(title);
+        builder.setContentText(content);
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher));
+        /*builder.setChannelId(PUSH_CHANNEL_ID);
+        Uri uri = Uri.parse("rong://" + context.getApplicationInfo().packageName).buildUpon().appendPath("conversation").appendPath(Conversation.ConversationType.PRIVATE.getName().toLowerCase(Locale.US)).appendQueryParameter("targetId", senderUserId).appendQueryParameter("title", "私人会话").build();
+        Intent intent = new Intent("android.intent.action.VIEW", uri);
+        PendingIntent pIntent = PendingIntent.getActivity(context.getApplicationContext(), 6, intent, 0);
+        builder.setContentIntent(pIntent);*/
+
+        Notification notification = builder.build();
+        manger.notify(NotificationId, notification);
+        //通过渠道显示消息
+        /*notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        if (manger != null) {
+            manger.notify(PUSH_NOTIFICATION_ID, notification);
+        }*/
     }
+
 }

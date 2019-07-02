@@ -1,11 +1,14 @@
 package com.shenl.androidTest;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.shenl.utils.MyCallback.LongLinkCallBack;
+import com.shenl.utils.MyUtils.PageUtils;
 import com.shenl.utils.activity.BaseActivity;
 import com.shenl.utils.http.LongLink;
 import com.shenl.utils.superlibrary.adapter.BaseViewHolder;
@@ -31,7 +34,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
-
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), com.shenl.utils.R.mipmap.ic_launcher);
+        PageUtils.showNotification(MainActivity.this,bitmap,1,"测试","测试内容......");
         sup_list = findViewById(R.id.sup_list);
 
     }
