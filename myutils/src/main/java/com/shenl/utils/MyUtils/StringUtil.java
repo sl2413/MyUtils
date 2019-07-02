@@ -1,107 +1,66 @@
 package com.shenl.utils.MyUtils;
 
-import android.util.Log;
-
-import java.io.UnsupportedEncodingException;
+import java.security.SecureRandom;
+import java.util.Random;
 
 /**
- * Created by wangyu on 2016/2/24.
+ * TODO 功能：操作字符串工具类
+ *
+ * 参数说明:
+ * 作    者:   沈 亮
+ * 创建时间:   2019/7/2
  */
 public class StringUtil {
-    //将Byte[]转成汉字
-    public static String byte2Chinese(String strSW, byte[] pRecvRes) {
-        String contentStr = strSW.substring(4, strSW.length() - 4);
-        String tmpResult = contentStr.replace("0000", "");
-        Log.i("contentStr",contentStr);
-        Log.i("tmpResult",tmpResult);
-        int tmpLength = tmpResult.length();
-        byte[] tmp = subBytes(pRecvRes, 2, tmpLength / 2);
-        String chineseStr = null;
-        try {
-            chineseStr = new String(tmp, "GB2312");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
 
-        return chineseStr;
+    /**
+     * TODO 功能：中文转码uniCode
+     *
+     * 参数说明:
+     * 作    者:   沈 亮
+     * 创建时间:   2017/11/22
+     */
+    public static String cnToUnicode(String cn){
+        char[] chars = cn.toCharArray();
+        String returnStr = "";
+        for (int i = 0; i < chars.length; i++) {
+            returnStr += "\\u" + Integer.toString(chars[i], 16);
+        }
+        return returnStr;
     }
 
-    //将Byte[]转换成String
-    public static String byte2String(byte[] buffer, int bufferLength) throws UnsupportedEncodingException {
-        String bufferString = "";
-        String dbgString = "";
-        for (int i = 0; i < bufferLength; i++) {
-            String hexChar = Integer.toHexString(buffer[i] & 0xFF);
-            if (hexChar.length() == 1) {
-                hexChar = "0" + hexChar;
-            }
-
-            if (i % 16 == 0) {
-                if (dbgString != "") {
-                    bufferString += dbgString;
-                    dbgString = "";
-                }
-            }
-            dbgString += hexChar;
+    /**
+     * TODO 功能：unicode编码转换中文
+     *
+     * 参数说明:
+     * 作    者:   沈 亮
+     * 创建时间:   2017/11/22
+     */
+    public static String unicodeToCn(String unicode) {
+        /** 以 \ u 分割，因为java注释也能识别unicode，因此中间加了一个空格*/
+        String[] strs = unicode.split("\\\\u");
+        String returnStr = "";
+        // 由于unicode字符串以 \ u 开头，因此分割出的第一个字符是""。
+        for (int i = 1; i < strs.length; i++) {
+            returnStr += (char) Integer.valueOf(strs[i], 16).intValue();
         }
-
-        if (dbgString != "") {
-            bufferString += dbgString;
-        }
-        return bufferString;
+        return returnStr;
     }
 
-    //将String转成byte[]
-    public static byte[] toByteArray(String hexString) {
-        int hexStringLength = hexString.length();
-        byte[] byteArray = null;
-        int count = 0;
-        char c;
-        int i;
-
-        // Count number of hex characters
-        for (i = 0; i < hexStringLength; i++) {
-            c = hexString.charAt(i);
-            if (c >= '0' && c <= '9' || c >= 'A' && c <= 'F' || c >= 'a'
-                    && c <= 'f') {
-                count++;
-            }
+    /**
+     * TODO 功能：获取指定位数随机码
+     *
+     * 参数说明:
+     * 作    者:   沈 亮
+     * 创建时间:   2019/7/2
+     */
+    public static String getNonceStr(int bit) {
+        String SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        Random RANDOM = new SecureRandom();
+        char[] nonceChars = new char[bit];
+        for (int index = 0; index < nonceChars.length; ++index) {
+            nonceChars[index] = SYMBOLS.charAt(RANDOM.nextInt(SYMBOLS.length()));
         }
-
-        byteArray = new byte[(count + 1) / 2];
-        boolean first = true;
-        int len = 0;
-        int value;
-        for (i = 0; i < hexStringLength; i++) {
-            c = hexString.charAt(i);
-            if (c >= '0' && c <= '9') {
-                value = c - '0';
-            } else if (c >= 'A' && c <= 'F') {
-                value = c - 'A' + 10;
-            } else if (c >= 'a' && c <= 'f') {
-                value = c - 'a' + 10;
-            } else {
-                value = -1;
-            }
-
-            if (value >= 0) {
-                if (first) {
-                    byteArray[len] = (byte) (value << 4);
-                } else {
-                    byteArray[len] |= value;
-                    len++;
-                }
-                first = !first;
-            }
-        }
-        return byteArray;
-    }
-
-    //截取byte数组
-    public static byte[] subBytes(byte[] src, int begin, int count) {
-        byte[] bs = new byte[count];
-        for (int i = begin; i < begin + count; i++) bs[i - begin] = src[i];
-        return bs;
+        return new String(nonceChars);
     }
 
 }
