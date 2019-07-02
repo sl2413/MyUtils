@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.shenl.utils.MyCallback.LongLinkCallBack;
 import com.shenl.utils.activity.BaseActivity;
+import com.shenl.utils.http.LongLink;
 import com.shenl.utils.superlibrary.adapter.BaseViewHolder;
 import com.shenl.utils.superlibrary.adapter.SuperBaseAdapter;
 import com.shenl.utils.superlibrary.recycleview.SuperRecyclerView;
@@ -50,6 +52,7 @@ public class MainActivity extends BaseActivity {
     public void initEvent() {
 
     }
+
 
     class myAdapter extends SuperBaseAdapter<String>{
 

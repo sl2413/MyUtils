@@ -1,5 +1,6 @@
 package com.shenl.androidTest;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.shenl.utils.MyUtils.JsonUtil;
@@ -15,15 +16,15 @@ public class HttpUrl {
     public static final String BASE = "http://10.19.92.71:88/";
     public static final String IPaddress = BASE + "auth_oa";
 
-    public static void getMsgCode(Context context, String json) {
+    public static void getMsgCode(Activity activity, String json) {
         String code = JsonUtil.getFieldValue(json, "code");
         if (!"0".equals(code)) {
-            PageUtils.showToast(context, JsonUtil.getFieldValue(json, "msg"));
+            PageUtils.showToast(activity, JsonUtil.getFieldValue(json, "msg"));
             return;
         }
     }
 
-    public static RequestParams getParams(String url){
+    public static RequestParams getParams(Context context,String url){
         RequestParams params = new RequestParams();
         params.setUri(IPaddress+url);
         params.addHeader("","");
