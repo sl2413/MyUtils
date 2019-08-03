@@ -1,6 +1,7 @@
 package com.shenl.utils.MyUtils;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
@@ -14,6 +15,10 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.shenl.utils.MyCallback.DialogCallBack;
@@ -124,7 +129,48 @@ public class PageUtils {
         return AlertDialog;
     }
 
+    /**
+     * TODO 功能：创建一个自定义对话框
+     *
+     * 参数说明: 默认大小，宽高=75%
+     * 作    者:   沈  亮
+     * 创建时间:   2019/8/3
+     */
+    public static Dialog showCustomDialog(Context context, View view) {
+        return showCustomDialog(context, view, 0.75f, 0.75f);
+    }
+    /**
+     * TODO 功能：创建一个自定义对话框
+     *
+     * 参数说明: 可以自定义大小 例如：0.75f
+     * 作    者:   沈  亮
+     * 创建时间:   2019/8/3
+     */
+    public static Dialog showCustomDialog(Context context, View view, float Wpercent, float Hpercent) {
+        final Dialog dialog = new Dialog(context, R.style.Theme_AppCompat_Dialog);
+        dialog.setContentView(view);
+        //使得点击对话框外部不消失对话框
+        dialog.setCanceledOnTouchOutside(true);
+        //设置对话框的大小
+        view.setMinimumHeight((int) (ScreenSizeUtils.getInstance(context).getScreenHeight() * 0.23f));
+        Window dialogWindow = dialog.getWindow();
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        lp.width = (int) (ScreenSizeUtils.getInstance(context).getScreenWidth() * Wpercent);
+        lp.height = (int) (ScreenSizeUtils.getInstance(context).getScreenHeight() * Hpercent);
+        lp.gravity = Gravity.CENTER;
+        dialogWindow.setAttributes(lp);
+        dialog.show();
+        return dialog;
+    }
 
+
+    /**
+     * TODO 功能：手机状态栏显示通知信息
+     *
+     * 参数说明:
+     * 作    者:   沈  亮
+     * 创建时间:   2019/8/3
+     */
     public static void showNotification(Context context, Bitmap icon,int NotificationId, String title, String content) {
         //在手机状态栏提示新消息
         //调用手机提示音
