@@ -20,13 +20,12 @@ import android.widget.LinearLayout;
 import com.shenl.utils.MyCallback.PermissionListener;
 import com.shenl.utils.MyUtils.PageUtils;
 import com.shenl.utils.application.AppManager;
+import com.shenl.utils.autolayout.AutoLayoutActivity;
 import com.shenl.utils.zxing.android.CaptureActivity;
-import com.shenl.utils.zxing.common.Constant;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseActivity extends Activity {
+public abstract class BaseActivity extends AutoLayoutActivity {
 
     // 记录用户首次点击返回键的时间
     private long firstTime = 0;

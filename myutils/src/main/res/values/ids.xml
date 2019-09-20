@@ -6,4 +6,8 @@
     <item name="BaseQuickAdapter_viewholder_support" type="id"/>
     <item name="BaseQuickAdapter_swiping_support" type="id"/>
     <item name="BaseQuickAdapter_dragging_support" type="id"/>
+
+    <item name="id_tag_autolayout_size" type="id"></item>
+    <item name="id_tag_autolayout_padding" type="id"></item>
+    <item name="id_tag_autolayout_margin" type="id"></item>
 </resources>
