@@ -15,7 +15,14 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="打开相册"
         android:onClick="openPhoto"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="消息提醒"
+        android:onClick="sendMsg"/>
 
     <com.shenl.utils.superlibrary.recycleview.SuperRecyclerView
         android:id="@+id/sup_list"
