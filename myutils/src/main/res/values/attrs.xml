@@ -68,6 +68,12 @@
     </declare-styleable>
     <!--end-->
 
+    <!--TimeDataView 参数-->
+    <declare-styleable name="TimeDataStyle">
+        <attr name="bgColor" format="color"/>
+        <attr name="unit" format="boolean"/>
+    </declare-styleable>
+
     <!-- S 自适应布局属性-->
     <declare-styleable name="AutoLayout_Layout">
         <attr name="layout_auto_basewidth">

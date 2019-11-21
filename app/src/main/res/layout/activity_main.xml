@@ -2,11 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
+    <com.shenl.utils.view.TimeDataView
+        android:id="@+id/tdv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:bgColor="#ff0000"
+        app:unit="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="openPhoto"/>
 
     <com.shenl.utils.superlibrary.recycleview.SuperRecyclerView
         android:id="@+id/sup_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>

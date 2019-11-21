@@ -5,12 +5,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 
+import com.shenl.utils.Image.ImageUtils;
+import com.shenl.utils.MyUtils.DateUtils;
 import com.shenl.utils.MyUtils.PageUtils;
 import com.shenl.utils.activity.BaseActivity;
 import com.shenl.utils.superlibrary.adapter.BaseViewHolder;
 import com.shenl.utils.superlibrary.adapter.SuperBaseAdapter;
 import com.shenl.utils.superlibrary.recycleview.SuperRecyclerView;
+import com.shenl.utils.view.TimeDataView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +23,7 @@ import java.util.List;
 public class MainActivity extends BaseActivity {
 
     private SuperRecyclerView sup_list;
+    private TimeDataView tdv_time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +40,8 @@ public class MainActivity extends BaseActivity {
         PageUtils.showNotification(MainActivity.this,bitmap,1,"测试","测试内容......");
         sup_list = findViewById(R.id.sup_list);
 
+        //倒计时
+        tdv_time = findViewById(R.id.tdv_time);
     }
 
     @Override
@@ -47,11 +54,17 @@ public class MainActivity extends BaseActivity {
         sup_list.setLayoutManager(manager);
         sup_list.setRefreshEnabled(true);
         sup_list.setAdapter(new myAdapter(MainActivity.this,list));
+
+        DateUtils.LimitedTime(DateUtils.DateToSecond("2019-11-23 00:00:00"),tdv_time);
     }
 
     @Override
     public void initEvent() {
 
+    }
+
+    public void openPhoto(View v){
+        ImageUtils.openPhoto(MainActivity.this);
     }
 
 
