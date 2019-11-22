@@ -1,4 +1,4 @@
-package com.shenl.utils.Image;
+package com.shenl.utils.MyUtils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,8 +21,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.shenl.utils.MyCallback.PermissionListener;
-import com.shenl.utils.MyUtils.PageUtils;
-import com.shenl.utils.MyUtils.ThreadUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

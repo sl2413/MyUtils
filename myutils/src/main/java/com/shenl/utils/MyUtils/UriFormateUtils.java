@@ -1,4 +1,4 @@
-package com.shenl.utils.Image;
+package com.shenl.utils.MyUtils;
 
 import android.annotation.SuppressLint;
 import android.content.ContentUris;

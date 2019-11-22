@@ -43,8 +43,16 @@ public abstract class BaseActivity extends AutoLayoutActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         //String name1 = getClass().getName();//获取全类名
         //String name2 = getClass().getSimpleName();//获取类名
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //显示状态栏
+        View decor = getWindow().getDecorView();
+        int ui = decor.getSystemUiVisibility();
+        ui |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //设置状态栏中字体的颜色为黑色
+        /*if (lightStatusBar) {
+            ui |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //设置状态栏中字体的颜色为黑色
+        } else {
+            ui &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //设置状态栏中字体颜色为白色
+        }*/
+        decor.setSystemUiVisibility(ui);
     }
 
     /**
