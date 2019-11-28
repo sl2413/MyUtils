@@ -6,35 +6,40 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+
+import com.shenl.utils.MyCallback.TabSelectedListener;
 import com.shenl.utils.MyUtils.BroadcastUtils;
-import com.shenl.utils.MyUtils.ImageUtils;
 import com.shenl.utils.MyUtils.DateUtils;
+import com.shenl.utils.MyUtils.ImageUtils;
 import com.shenl.utils.MyUtils.PageUtils;
 import com.shenl.utils.activity.BaseActivity;
 import com.shenl.utils.superlibrary.adapter.BaseViewHolder;
 import com.shenl.utils.superlibrary.adapter.SuperBaseAdapter;
 import com.shenl.utils.superlibrary.recycleview.SuperRecyclerView;
+import com.shenl.utils.view.BadgeButton;
+import com.shenl.utils.view.TabView;
 import com.shenl.utils.view.TimeDataView;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class MainActivity extends BaseActivity {
 
     private SuperRecyclerView sup_list;
     private TimeDataView tdv_time;
     private BroadcastReceiver receiver;
+    private TabLayout tabs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         PageUtils.createNotificationChannel(MainActivity.this, "1", "name", 1);
-
         receiver = BroadcastUtils.StartBroadcast(MainActivity.this, "shenl", new BroadcastUtils.ReceiverListener() {
             @Override
             public void Receive(Intent intent) {
@@ -53,6 +58,13 @@ public class MainActivity extends BaseActivity {
 
         //倒计时
         tdv_time = findViewById(R.id.tdv_time);
+
+        tabs = findViewById(R.id.tabs);
+        TabView.addTabItem(MainActivity.this,tabs,"首页",R.mipmap.list_1,R.color.tab);
+        TabView.addTabItem(MainActivity.this,tabs,"扩展",R.mipmap.list_2,R.color.tab);
+        TabView.addTabItem(MainActivity.this,tabs,"我的",R.mipmap.list_3,R.color.tab);
+        tabs.getTabAt(0).select();
+
     }
 
     @Override
@@ -71,7 +83,13 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initEvent() {
-
+        tabs.addOnTabSelectedListener(new TabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                BadgeButton customView = (BadgeButton) tab.getCustomView();
+                PageUtils.showToast(MainActivity.this,customView.getText()+"");
+            }
+        });
     }
 
     public void openPhoto(View v) {
