@@ -14,7 +14,7 @@ import android.view.View;
 import com.shenl.utils.MyCallback.TabSelectedListener;
 import com.shenl.utils.MyUtils.BroadcastUtils;
 import com.shenl.utils.MyUtils.DateUtils;
-import com.shenl.utils.MyUtils.ImageUtils;
+import com.shenl.utils.MyUtils.FileUtils;
 import com.shenl.utils.MyUtils.PageUtils;
 import com.shenl.utils.activity.BaseActivity;
 import com.shenl.utils.superlibrary.adapter.BaseViewHolder;
@@ -69,6 +69,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData() {
+
+
         ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
             list.add("条目" + i);
@@ -93,7 +95,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void openPhoto(View v) {
-        ImageUtils.openPhoto(MainActivity.this);
+        FileUtils.openPhoto(MainActivity.this);
     }
 
     public void sendMsg(View v) {

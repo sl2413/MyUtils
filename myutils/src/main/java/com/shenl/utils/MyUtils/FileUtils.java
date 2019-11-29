@@ -42,7 +42,7 @@ import java.util.Date;
  * 作    者:   沈 亮
  * 创建时间:   2018/12/14
  */
-public class ImageUtils {
+public class FileUtils {
     //Vibrant 鲜艳的
     public static final int VIBRANT = 11;
     //DarkVibrant 鲜艳的暗色
@@ -271,6 +271,29 @@ public class ImageUtils {
             public void onGranted() {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
+                // intent.setType("image/*;video/*");
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                activity.startActivityForResult(intent, 1000);
+            }
+        });
+    }
+
+    /**
+     * TODO 功能：打开本地文件管理器
+     * <p>
+     * 参数说明:
+     * 作    者:   沈  亮
+     * 创建时间:   2019/11/29
+     */
+    public static void OpenFolder(final Activity activity) {
+        String[] PERMISSIONS_STORAGE = {
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        getPermissions(activity, PERMISSIONS_STORAGE, new PermissionListener(activity) {
+            @Override
+            public void onGranted() {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("*/*");
                 // intent.setType("image/*;video/*");
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 activity.startActivityForResult(intent, 1000);
