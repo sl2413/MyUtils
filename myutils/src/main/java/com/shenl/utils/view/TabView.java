@@ -102,7 +102,7 @@ public class TabView {
      * 作    者:   沈 亮
      * 创建时间:   2018/12/28
      */
-    static Drawable wrap(Context context, int icon) {
+    public static Drawable wrap(Context context, int icon) {
         return wrap(context, icon, 50, R.color.tab);
     }
 
@@ -113,7 +113,7 @@ public class TabView {
      * 作    者:   沈 亮
      * 创建时间:   2018/12/28
      */
-    static Drawable wrap(Context context, int icon, int Size) {
+    public static Drawable wrap(Context context, int icon, int Size) {
         return wrap(context, icon, Size, R.color.tab);
     }
 
@@ -124,7 +124,7 @@ public class TabView {
      * 作    者:   沈 亮
      * 创建时间:   2018/12/28
      */
-    static Drawable wrap(Context context, int icon, int Size, int selector) {
+    public static Drawable wrap(Context context, int icon, int Size, int selector) {
         ColorStateList mTint = null;
         Drawable drawable = ResourcesCompat.getDrawable(context.getResources(), icon, context.getTheme());
         if (mTint == null) {
