@@ -10,6 +10,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import com.shenl.utils.MyCallback.TabSelectedListener;
 import com.shenl.utils.MyUtils.BroadcastUtils;
@@ -21,6 +25,7 @@ import com.shenl.utils.superlibrary.adapter.BaseViewHolder;
 import com.shenl.utils.superlibrary.adapter.SuperBaseAdapter;
 import com.shenl.utils.superlibrary.recycleview.SuperRecyclerView;
 import com.shenl.utils.view.BadgeButton;
+import com.shenl.utils.view.SpinnerView;
 import com.shenl.utils.view.TabView;
 import com.shenl.utils.view.TimeDataView;
 
@@ -33,6 +38,8 @@ public class MainActivity extends BaseActivity {
     private TimeDataView tdv_time;
     private BroadcastReceiver receiver;
     private TabLayout tabs;
+    private SpinnerView sv_list;
+    private List<String> list;
 
 
     @Override
@@ -46,7 +53,6 @@ public class MainActivity extends BaseActivity {
                 PageUtils.showLog("广播接收到");
             }
         });
-
         initView();
         initData();
         initEvent();
@@ -54,11 +60,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        sv_list = findViewById(R.id.sv_list);
         sup_list = findViewById(R.id.sup_list);
-
         //倒计时
         tdv_time = findViewById(R.id.tdv_time);
-
         tabs = findViewById(R.id.tabs);
         TabView.addTabItem(MainActivity.this,tabs,"首页",R.mipmap.list_1,R.color.tab);
         TabView.addTabItem(MainActivity.this,tabs,"扩展",R.mipmap.list_2,R.color.tab);
@@ -69,22 +74,26 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
-
-        ArrayList<String> list = new ArrayList<>();
+        list = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
             list.add("条目" + i);
         }
+        sv_list.setAdapter(new svAdapter(list));
         LinearLayoutManager manager = new LinearLayoutManager(MainActivity.this);
         sup_list.setLayoutManager(manager);
         sup_list.setRefreshEnabled(true);
         sup_list.setAdapter(new myAdapter(MainActivity.this, list));
-
         DateUtils.LimitedTime(DateUtils.DateToSecond("2019-11-23 00:00:00"), tdv_time);
     }
 
     @Override
     public void initEvent() {
+        sv_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                sv_list.setText(list.get(position));
+            }
+        });
         tabs.addOnTabSelectedListener(new TabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -135,6 +144,38 @@ public class MainActivity extends BaseActivity {
         @Override
         protected int getItemViewLayoutId(int position, String item) {
             return R.layout.item;
+        }
+    }
+
+    class svAdapter extends BaseAdapter{
+
+        private List<String> list;
+        public svAdapter(List<String> list) {
+            this.list = list;
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            TextView tv = new TextView(MainActivity.this);
+            tv.setPadding(10,10,10,10);
+            tv.setTextSize(15);
+            tv.setText(list.get(position));
+            return tv;
         }
     }
 }

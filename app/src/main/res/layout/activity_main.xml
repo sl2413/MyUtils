@@ -6,6 +6,11 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
+    <com.shenl.utils.view.SpinnerView
+        android:id="@+id/sv_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <com.shenl.utils.view.TimeDataView
         android:id="@+id/tdv_time"
         android:layout_width="wrap_content"
