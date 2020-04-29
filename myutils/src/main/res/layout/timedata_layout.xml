@@ -11,16 +11,16 @@
         android:layout_height="wrap_content"
         android:background="#000"
         android:textColor="#fff"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:text="0"/>
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:text="00"/>
     <TextView
         android:id="@+id/tv_text_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
         android:text=":"/>
 
     <TextView
@@ -29,16 +29,16 @@
         android:layout_height="wrap_content"
         android:background="#000"
         android:textColor="#fff"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:text="0"/>
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:text="00"/>
     <TextView
         android:id="@+id/tv_text_hour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
         android:text=":"/>
     <TextView
         android:id="@+id/tv_minute"
@@ -46,16 +46,16 @@
         android:layout_height="wrap_content"
         android:background="#000"
         android:textColor="#fff"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:text="0"/>
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:text="00"/>
     <TextView
         android:id="@+id/tv_text_minute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
         android:text=":"/>
     <TextView
         android:id="@+id/tv_second"
@@ -63,16 +63,16 @@
         android:layout_height="wrap_content"
         android:background="#000"
         android:textColor="#fff"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:text="0"/>
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:text="00"/>
     <TextView
         android:id="@+id/tv_text_second"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
         android:text=""/>
 
 </LinearLayout>

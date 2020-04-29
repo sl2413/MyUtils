@@ -72,6 +72,7 @@
     <declare-styleable name="TimeDataStyle">
         <attr name="bgColor" format="color"/>
         <attr name="unit" format="boolean"/>
+        <attr name="textSize" format="dimension"/>
     </declare-styleable>
 
     <!-- S 自适应布局属性-->

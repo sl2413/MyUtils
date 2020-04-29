@@ -50,6 +50,7 @@ public class TimeDataView extends LinearLayout {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TimeDataStyle);
         int bgcolor = typedArray.getColor(R.styleable.TimeDataStyle_bgColor, Color.parseColor("#000000"));
         boolean unit = typedArray.getBoolean(R.styleable.TimeDataStyle_unit, false);
+        float textSize = typedArray.getDimension(R.styleable.TimeDataStyle_textSize, 10);
         //设置数字背景颜色
         tv_day.setBackgroundColor(bgcolor);
         tv_hour.setBackgroundColor(bgcolor);
@@ -62,6 +63,33 @@ public class TimeDataView extends LinearLayout {
             tv_text_minute.setText("分");
             tv_text_second.setText("秒");
         }
+        //设置字体大小
+        tv_day.setTextSize(textSize);
+        tv_text_day.setTextSize(textSize);
+        tv_hour.setTextSize(textSize);
+        tv_text_hour.setTextSize(textSize);
+        tv_minute.setTextSize(textSize);
+        tv_text_minute.setTextSize(textSize);
+        tv_second.setTextSize(textSize);
+        tv_text_second.setTextSize(textSize);
+    }
+
+    /**
+     * TODO 功能：设置字体大小
+     *
+     * 参数说明:
+     * 作    者:   沈  亮
+     * 创建时间:   2020/4/29
+     */
+    public void setTextSize(float textSize){
+        tv_day.setTextSize(textSize);
+        tv_text_day.setTextSize(textSize);
+        tv_hour.setTextSize(textSize);
+        tv_text_hour.setTextSize(textSize);
+        tv_minute.setTextSize(textSize);
+        tv_text_minute.setTextSize(textSize);
+        tv_second.setTextSize(textSize);
+        tv_text_second.setTextSize(textSize);
     }
 
     /**
