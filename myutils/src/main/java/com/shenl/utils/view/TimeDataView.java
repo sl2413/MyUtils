@@ -50,7 +50,7 @@ public class TimeDataView extends LinearLayout {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TimeDataStyle);
         int bgcolor = typedArray.getColor(R.styleable.TimeDataStyle_bgColor, Color.parseColor("#000000"));
         boolean unit = typedArray.getBoolean(R.styleable.TimeDataStyle_unit, false);
-        float textSize = typedArray.getDimension(R.styleable.TimeDataStyle_textSize, 10);
+        float textSize = typedArray.getDimension(R.styleable.TimeDataStyle_textSize, 12);
         //设置数字背景颜色
         tv_day.setBackgroundColor(bgcolor);
         tv_hour.setBackgroundColor(bgcolor);
