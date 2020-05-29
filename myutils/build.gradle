@@ -5,7 +5,6 @@ group = 'com.github.sl2413'
 android {
     compileSdkVersion 28
     buildToolsVersion '27.0.3'
-
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 28

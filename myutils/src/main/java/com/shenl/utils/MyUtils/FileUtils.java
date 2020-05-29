@@ -20,6 +20,7 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.shenl.utils.MyCallback.PermissionListener;
 
 import java.io.ByteArrayOutputStream;
@@ -67,7 +68,27 @@ public class FileUtils {
      * 创建时间:   2018/12/14
      */
     public static void setIvBitmap(Context context, String imgUrl, ImageView iv){
-        Glide.with(context).load(imgUrl).into(iv);
+        setIvBitmap(context,imgUrl,iv,200);
+    }
+
+    /**
+     * TODO 功能：为imageView设置bitmap图片，图片来源可以是网络或本地
+     *
+     * 参数说明:
+     * context => 上下文
+     * imgUrl => 图片地址
+     * iv => 要存放图片的imageView
+     * size => 图片质量默认为200*200
+     * 作    者:   沈 亮
+     * 创建时间:   2018/12/14
+     */
+    public static void setIvBitmap(Context context, String imgUrl, ImageView iv,int size){
+        Glide.with(context)
+                .load(imgUrl)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .override(size,size)
+                .into(iv);
     }
 
     /**

@@ -29,6 +29,7 @@ public class LongLink extends WebSocketClient {
     @Override
     public void onOpen(ServerHandshake handshakedata) {
         PageUtils.showLog("长链接开启......");
+        callBack.onOpen(handshakedata);
     }
 
     @Override
@@ -39,10 +40,12 @@ public class LongLink extends WebSocketClient {
     @Override
     public void onClose(int code, String reason, boolean remote) {
         PageUtils.showLog("长链接关闭......");
+        callBack.onClose(code,reason,remote);
     }
 
     @Override
     public void onError(Exception ex) {
         PageUtils.showLog("长链接错误..."+ex.getMessage());
+        callBack.onError(ex);
     }
 }

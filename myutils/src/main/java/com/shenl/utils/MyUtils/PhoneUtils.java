@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
@@ -22,6 +23,7 @@ import android.telephony.TelephonyManager;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.shenl.utils.bean.ContactsInfo;
 
 import java.io.IOException;
@@ -423,5 +425,35 @@ public class PhoneUtils {
             }
         }
         return bitmap;
+    }
+
+    /**
+     * TODO 功能：清除内存缓存
+     * <p>
+     * 参数说明:
+     * 作    者:   沈  亮
+     * 创建时间:   2020/5/27
+     */
+    public static void clearMemoryCache(Context context) {
+        System.gc();
+        Glide.get(context).clearMemory();
+    }
+
+    /**
+     * TODO 功能：清除磁盘缓存.必须在子线程里做
+     *
+     * 参数说明:
+     * 作    者:   沈  亮
+     * 创建时间:   2020/5/27
+     */
+    public static void clearDiskCache(final Context context) {
+        System.gc();
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                Glide.get(context).clearDiskCache();
+                return null;
+            }
+        };
     }
 }
