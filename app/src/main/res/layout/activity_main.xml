@@ -41,7 +41,11 @@
         android:text="停止接收"
         android:onClick="Stop"/>
 
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="显示对话框"
+        android:onClick="showProgress"/>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
@@ -57,5 +61,6 @@
         android:id="@+id/sup_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
 
 </LinearLayout>

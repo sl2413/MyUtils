@@ -4,13 +4,13 @@
 
     <declare-styleable name="BadgeButton">
         <!-- 徽标文本，为空时显示一个小红点 -->
-        <attr name="btnBadgeText" format="string"/>
+        <attr name="btnBadgeText" format="string" />
         <!-- 徽标高度，宽度自适应 -->
-        <attr name="btnBadgeHeight" format="dimension"/>
+        <attr name="btnBadgeHeight" format="dimension" />
         <!-- 徽标背景色，文本白色 -->
-        <attr name="btnBadgeColor" format="color"/>
+        <attr name="btnBadgeColor" format="color" />
         <!-- 徽标是否可见 -->
-        <attr name="btnBadgeVisible" format="boolean"/>
+        <attr name="btnBadgeVisible" format="boolean" />
     </declare-styleable>
 
     <!--pull to refresh and loadmore-->
@@ -70,9 +70,34 @@
 
     <!--TimeDataView 参数-->
     <declare-styleable name="TimeDataStyle">
-        <attr name="bgColor" format="color"/>
-        <attr name="unit" format="boolean"/>
-        <attr name="textSize" format="dimension"/>
+        <attr name="bgColor" format="color" />
+        <attr name="unit" format="boolean" />
+        <attr name="textSize" format="dimension" />
+    </declare-styleable>
+
+    <!--圆形ImageView参数-->
+    <declare-styleable name="NiceImageView">
+        <attr name="is_circle" format="boolean" />
+        <attr name="is_cover_src" format="boolean" />
+        <attr name="corner_radius" format="dimension" />
+        <attr name="corner_top_left_radius" format="dimension" />
+        <attr name="corner_top_right_radius" format="dimension" />
+        <attr name="corner_bottom_left_radius" format="dimension" />
+        <attr name="corner_bottom_right_radius" format="dimension" />
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+        <attr name="inner_border_width" format="dimension" />
+        <attr name="inner_border_color" format="color" />
+        <attr name="mask_color" format="color" />
+    </declare-styleable>
+
+    <!-- gif 加载控件参数 -->
+    <declare-styleable name="GifView">
+        <attr name="gif" format="reference" />
+        <attr name="paused" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="CustomTheme">
+        <attr name="gifViewStyle" format="reference" />
     </declare-styleable>
 
     <!-- S 自适应布局属性-->

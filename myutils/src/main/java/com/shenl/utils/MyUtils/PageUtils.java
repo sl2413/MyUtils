@@ -1,6 +1,5 @@
 package com.shenl.utils.MyUtils;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Notification;
@@ -20,12 +19,15 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.shenl.utils.MyCallback.DialogCallBack;
 import com.shenl.utils.R;
+import com.shenl.utils.view.GifView;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -98,6 +100,32 @@ public class PageUtils {
     }
 
     /**
+     * TODO 功能：显示一个带样式的不确定进度对话框并且可以自定义提交消息
+     *
+     * 参数说明: ProgressStyle为样式编号
+     * 作    者:   沈  亮
+     * 创建时间:   2020/6/3
+     */
+    public static Dialog showDialog(Context context,int ProgressStyle){
+        final Dialog dialog = new Dialog(context, R.style.Theme_AppCompat_Dialog);
+        View view = View.inflate(context, R.layout.progress_style, null);
+        GifView iv_style = view.findViewById(R.id.iv_style);
+        switch (ProgressStyle){
+            case 1:
+                iv_style.setMovieResource(R.drawable.style1);
+                break;
+            case 2:
+                iv_style.setMovieResource(R.drawable.style2);
+                break;
+        }
+        dialog.setContentView(view,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        //使得点击对话框外部不消失对话框
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+        return dialog;
+    }
+
+    /**
      * TODO 功能：显示一个不确定进度对话框
      * <p>
      * 参数说明:
@@ -135,18 +163,23 @@ public class PageUtils {
     }
 
     /**
-     * TODO 功能：创建一个自定义对话框
+     * TODO 功能：创建一个根据内容自动宽高的对话框
      * <p>
      * 参数说明: 默认大小，宽高=75%
      * 作    者:   沈  亮
      * 创建时间:   2019/8/3
      */
     public static Dialog showCustomDialog(Context context, View view) {
-        return showCustomDialog(context, view, 0.75f, 0.75f);
+        final Dialog dialog = new Dialog(context, R.style.Theme_AppCompat_Dialog);
+        dialog.setContentView(view,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        //使得点击对话框外部不消失对话框
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+        return dialog;
     }
 
     /**
-     * TODO 功能：创建一个自定义对话框
+     * TODO 功能：创建一个自定义大小的对话框
      * <p>
      * 参数说明: 可以自定义大小 例如：0.75f
      * 作    者:   沈  亮

@@ -129,6 +129,10 @@ public class MainActivity extends BaseActivity {
         BroadcastUtils.StopBroadcast(MainActivity.this,receiver);
     }
 
+    public void showProgress(View v){
+        PageUtils.showDialog(MainActivity.this,2);
+    }
+
 
     class myAdapter extends SuperBaseAdapter<String> {
 
