@@ -130,9 +130,12 @@ public class MainActivity extends BaseActivity {
     }
 
     public void showProgress(View v){
-        PageUtils.showDialog(MainActivity.this,2);
+        PageUtils.showDialog(MainActivity.this,5);
     }
 
+    public void PlayVideo(View v){
+        openActivity(PlayViewActivity.class);
+    }
 
     class myAdapter extends SuperBaseAdapter<String> {
 

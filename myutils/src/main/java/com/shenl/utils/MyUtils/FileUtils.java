@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.shenl.utils.MyCallback.PermissionListener;
+import com.shenl.utils.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -87,6 +88,7 @@ public class FileUtils {
                 .load(imgUrl)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.no_picture)
                 .override(size,size)
                 .into(iv);
     }

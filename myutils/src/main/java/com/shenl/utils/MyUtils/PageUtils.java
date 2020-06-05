@@ -108,6 +108,8 @@ public class PageUtils {
      */
     public static Dialog showDialog(Context context,int ProgressStyle){
         final Dialog dialog = new Dialog(context, R.style.Theme_AppCompat_Dialog);
+        Window dialogWindow = dialog.getWindow();
+        dialogWindow.setBackgroundDrawableResource(android.R.color.transparent);// 一句话搞定
         View view = View.inflate(context, R.layout.progress_style, null);
         GifView iv_style = view.findViewById(R.id.iv_style);
         switch (ProgressStyle){
@@ -117,10 +119,19 @@ public class PageUtils {
             case 2:
                 iv_style.setMovieResource(R.drawable.style2);
                 break;
+            case 3:
+                iv_style.setMovieResource(R.drawable.style3);
+                break;
+            case 4:
+                iv_style.setMovieResource(R.drawable.style4);
+                break;
+            case 5:
+                iv_style.setMovieResource(R.drawable.style5);
+                break;
         }
-        dialog.setContentView(view,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        dialog.setContentView(view,new LinearLayout.LayoutParams(PhoneUtils.getPhoneWidth(context)/4, ViewGroup.LayoutParams.WRAP_CONTENT));
         //使得点击对话框外部不消失对话框
-        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         return dialog;
     }

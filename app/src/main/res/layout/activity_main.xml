@@ -47,6 +47,12 @@
         android:text="显示对话框"
         android:onClick="showProgress"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="播放视频"
+        android:onClick="PlayVideo"/>
+
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
