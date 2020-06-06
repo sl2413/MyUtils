@@ -20,9 +20,12 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.target.Target;
 import com.shenl.utils.MyCallback.PermissionListener;
 import com.shenl.utils.R;
 
@@ -71,7 +74,7 @@ public class FileUtils {
      * 创建时间:   2018/12/14
      */
     public static void setIvBitmap(Context context, String imgUrl, ImageView iv) {
-        setIvBitmap(context, imgUrl, iv, 200,false);
+        setIvBitmap(context, imgUrl, iv, 200, false);
     }
 
     /**
@@ -86,14 +89,17 @@ public class FileUtils {
      * 作    者:   沈 亮
      * 创建时间:   2018/12/14
      */
-    public static void setIvBitmap(Context context, String imgUrl, ImageView iv, int size,boolean isSeat) {
-        RequestManager with = Glide.with(context);
-        with.load(imgUrl)
+    public static void setIvBitmap(Context context, String imgUrl, ImageView iv, int size, boolean isSeat) {
+        DrawableRequestBuilder<String> override = Glide.with(context)
+                .load(imgUrl)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .override(size, size)
-                .placeholder(isSeat?R.drawable.no_picture:null)
-                .into(iv);
+                .override(size, size);
+        if (isSeat) {
+            override.placeholder(isSeat ? R.drawable.no_picture : null).into(iv);
+        } else {
+            override.into(iv);
+        }
     }
 
     /**
