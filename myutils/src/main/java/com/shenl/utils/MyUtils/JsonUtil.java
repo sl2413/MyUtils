@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,6 +86,9 @@ public class JsonUtil {
 	public static List<?> parseJsonToList(String json, Type type) {
 		Gson gson = new Gson();
 		List<?> list = gson.fromJson(json, type);
+		if (list == null){
+			return new ArrayList<>();
+		}
 		return list;
 	}
 

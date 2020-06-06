@@ -19,7 +19,9 @@ import android.support.v7.graphics.Palette;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.shenl.utils.MyCallback.PermissionListener;
 import com.shenl.utils.R;
@@ -39,7 +41,7 @@ import java.util.Date;
 
 /**
  * TODO 功能：加载网络图片工具类
- *　此工具类需配合　glide-3.6.0.jar　使用
+ * 　此工具类需配合　glide-3.6.0.jar　使用
  * 参数说明:
  * 作    者:   沈 亮
  * 创建时间:   2018/12/14
@@ -60,7 +62,7 @@ public class FileUtils {
 
     /**
      * TODO 功能：为imageView设置bitmap图片，图片来源可以是网络或本地
-     *
+     * <p>
      * 参数说明:
      * context => 上下文
      * imgUrl => 图片地址
@@ -68,28 +70,29 @@ public class FileUtils {
      * 作    者:   沈 亮
      * 创建时间:   2018/12/14
      */
-    public static void setIvBitmap(Context context, String imgUrl, ImageView iv){
-        setIvBitmap(context,imgUrl,iv,200);
+    public static void setIvBitmap(Context context, String imgUrl, ImageView iv) {
+        setIvBitmap(context, imgUrl, iv, 200,false);
     }
 
     /**
      * TODO 功能：为imageView设置bitmap图片，图片来源可以是网络或本地
-     *
+     * <p>
      * 参数说明:
      * context => 上下文
      * imgUrl => 图片地址
      * iv => 要存放图片的imageView
      * size => 图片质量默认为200*200
+     * isSeat => 是否显示占位图，默认为不显示
      * 作    者:   沈 亮
      * 创建时间:   2018/12/14
      */
-    public static void setIvBitmap(Context context, String imgUrl, ImageView iv,int size){
-        Glide.with(context)
-                .load(imgUrl)
+    public static void setIvBitmap(Context context, String imgUrl, ImageView iv, int size,boolean isSeat) {
+        RequestManager with = Glide.with(context);
+        with.load(imgUrl)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.no_picture)
-                .override(size,size)
+                .override(size, size)
+                .placeholder(isSeat?R.drawable.no_picture:null)
                 .into(iv);
     }
 
@@ -98,10 +101,11 @@ public class FileUtils {
      * 参数说明 : iv => 存放图片的imageView
      * 作者 : shenl
      * 创建日期 : 2019/6/19
+     *
      * @return :
      */
-    public static Bitmap getIvBitmap(ImageView iv){
-        return ((BitmapDrawable)iv.getDrawable()).getBitmap();
+    public static Bitmap getIvBitmap(ImageView iv) {
+        return ((BitmapDrawable) iv.getDrawable()).getBitmap();
     }
 
     /**
@@ -109,12 +113,13 @@ public class FileUtils {
      * 参数说明 :
      * 作者 : shenl
      * 创建日期 : 2019/6/19
+     *
      * @return :
      */
-    public static int getBitmapColor(Bitmap bm,int type){
+    public static int getBitmapColor(Bitmap bm, int type) {
         int color = Color.BLACK;
         Palette palette = Palette.generate(bm);
-        switch (type){
+        switch (type) {
             case VIBRANT:
                 return palette.getVibrantColor(color);
             case DARKVIBRANT:
@@ -130,9 +135,10 @@ public class FileUtils {
         }
         return type;
     }
+
     /**
      * TODO 功能：资源文件转换成bitmap
-     *
+     * <p>
      * 参数说明:
      * 作    者:   沈 亮
      * 创建时间:   2018/12/14
@@ -151,12 +157,12 @@ public class FileUtils {
 
     /**
      * TODO 功能：通过网络图片url地址转换成bitmap
-     *
+     * <p>
      * 参数说明:
      * 作    者:   沈 亮
      * 创建时间:   2019/6/25
      */
-    public static void UrlToBitmap(final String url, final ImageLoader imageLoader){
+    public static void UrlToBitmap(final String url, final ImageLoader imageLoader) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -167,7 +173,7 @@ public class FileUtils {
                     e.printStackTrace();
                 }
                 try {
-                    HttpURLConnection conn = (HttpURLConnection)imageurl.openConnection();
+                    HttpURLConnection conn = (HttpURLConnection) imageurl.openConnection();
                     conn.setDoInput(true);
                     conn.connect();
                     InputStream is = conn.getInputStream();
@@ -190,12 +196,12 @@ public class FileUtils {
 
     /**
      * TODO 功能：bigmap转file文件
-     *
+     * <p>
      * 参数说明:
      * 作    者:   沈  亮
      * 创建时间:   2019/7/17
      */
-    public static File compressImage(Bitmap bitmap,long KB) {
+    public static File compressImage(Bitmap bitmap, long KB) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         int options = 100;
@@ -204,7 +210,7 @@ public class FileUtils {
             options -= 10;//每次都减少10
             bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
             long length = baos.toByteArray().length;
-            PageUtils.showLog("压缩图："+length);
+            PageUtils.showLog("压缩图：" + length);
         }
 
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -213,7 +219,7 @@ public class FileUtils {
         String filename = format.format(date);
 
         File file = new File(Environment.getExternalStorageDirectory(), filename + ".png");
-        PageUtils.showLog("转换完成文件大小："+file.length());
+        PageUtils.showLog("转换完成文件大小：" + file.length());
         try {
             FileOutputStream fos = new FileOutputStream(file);
             try {
@@ -231,12 +237,12 @@ public class FileUtils {
 
     /**
      * TODO 功能：文件路径转成文件
-     *
+     * <p>
      * 参数说明:
      * 作    者:   沈  亮
      * 创建时间:   2019/11/21
      */
-    public static File compress(Activity activity, String path,long KB) {
+    public static File compress(Activity activity, String path, long KB) {
         PageUtils.showLog("图片路径：" + path);
         File file = new File(path);
         BitmapFactory.Options opts = new BitmapFactory.Options();
@@ -272,19 +278,19 @@ public class FileUtils {
         opts.inSampleSize = scale;
         opts.inJustDecodeBounds = false;
 
-        Bitmap bm = BitmapFactory.decodeFile(path,opts);
-        File compressfile = compressImage(bm,KB);
+        Bitmap bm = BitmapFactory.decodeFile(path, opts);
+        File compressfile = compressImage(bm, KB);
         return compressfile;
     }
 
     /**
      * TODO 功能：打开手机相册页面
-     *
+     * <p>
      * 参数说明:
      * 作    者:   沈  亮
      * 创建时间:   2019/11/21
      */
-    public static void openPhoto(final Activity activity){
+    public static void openPhoto(final Activity activity) {
         //动态需要请求的权限 ,例如下代码
         String[] PERMISSIONS_STORAGE = {
                 android.Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -326,12 +332,12 @@ public class FileUtils {
 
     /**
      * TODO 功能：获取选择的文件
-     *
+     * <p>
      * 参数说明: 该方法要放到onActivityResult里面
      * 作    者:   沈  亮
      * 创建时间:   2019/11/21
      */
-    public static File getFile(Context context,Intent data){
+    public static File getFile(Context context, Intent data) {
         Uri uri = data.getData();
         if ("file".equalsIgnoreCase(uri.getScheme())) {//使用第三方应用打开
             String path = uri.getPath();
@@ -355,18 +361,18 @@ public class FileUtils {
 
     /**
      * TODO 功能：网络图片加载完成回调接口
-     *
+     * <p>
      * 参数说明:
      * 作    者:   沈 亮
      * 创建时间:   2019/6/25
      */
-    interface ImageLoader{
+    interface ImageLoader {
         void success(Bitmap bitmap);
     }
 
     /**
      * TODO 功能：请求所需权限
-     *
+     * <p>
      * 参数说明:
      * 作    者:   沈  亮
      * 创建时间:   2019/11/21
