@@ -96,7 +96,7 @@ public class FileUtils {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .override(size, size);
         if (isSeat) {
-            override.placeholder(isSeat ? R.drawable.no_picture : null).into(iv);
+            override.placeholder(R.drawable.no_picture).into(iv);
         } else {
             override.into(iv);
         }
