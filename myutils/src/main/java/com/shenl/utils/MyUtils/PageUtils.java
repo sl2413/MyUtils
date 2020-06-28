@@ -24,7 +24,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.shenl.utils.MyCallback.DialogCallBack;
 import com.shenl.utils.R;
 import com.shenl.utils.view.GifView;
@@ -79,7 +78,11 @@ public class PageUtils {
      */
     public static void showLog(String text) {
         if (PrintFalg) {
-            Log.e("shenl", text);
+            if (!TextUtils.isEmpty(text)){
+                Log.e("shenl", text);
+            }else{
+                Log.e("shenl", "(空)");
+            }
         }
     }
 

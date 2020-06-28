@@ -49,7 +49,7 @@ public class LoadingMoreFooter extends LinearLayout {
 
         addView(progressCon);
         mText = new TextView(getContext());
-        mText.setText("正在加载");
+        mText.setText("加载中...");
 
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(10,0,0,0 );
@@ -73,11 +73,11 @@ public class LoadingMoreFooter extends LinearLayout {
         switch(state) {
             case STATE_LOADING:
                 progressCon.setVisibility(View.VISIBLE);
-                mText.setText("正在加载");
+                mText.setText("加载中...");
                 this.setVisibility(View.VISIBLE);
                     break;
             case STATE_COMPLETE:
-                mText.setText("正在加载");
+                mText.setText("加载中...");
                 this.setVisibility(View.GONE);
                 break;
             case STATE_NOMORE:

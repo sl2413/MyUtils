@@ -53,6 +53,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="35dp"
             android:layout_marginRight="10dp"
+            android:visibility="gone"
             android:layout_toLeftOf="@id/listview_header_text"
             android:src="@mipmap/ic_pulltorefresh_arrow" />
 
