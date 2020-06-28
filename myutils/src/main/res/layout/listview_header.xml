@@ -65,7 +65,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="10dp"
-            android:visibility="invisible" />
+            android:visibility="gone" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -94,7 +94,8 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
     public void setProgressStyle(int style) {
         if(style == ProgressStyle.SysProgress){
-            mProgressBar.setView(new ProgressBar(getContext(), null, android.R.attr.progressBarStyle));
+//            mProgressBar.setView(new ProgressBar(getContext(), null, android.R.attr.progressBarStyle));
+            mProgressBar.setView(new TextView(getContext()));
         }else{
             AVLoadingIndicatorView progressView = new AVLoadingIndicatorView(this.getContext());
             progressView.setIndicatorColor(0xffB5B5B5);
@@ -118,7 +119,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
             mArrowImageView.setVisibility(View.INVISIBLE);
             mProgressBar.setVisibility(View.INVISIBLE);
         } else {	// 显示箭头图片
-			mArrowImageView.setVisibility(View.VISIBLE);
+//			mArrowImageView.setVisibility(View.VISIBLE);
 			mProgressBar.setVisibility(View.INVISIBLE);
 		}
 		

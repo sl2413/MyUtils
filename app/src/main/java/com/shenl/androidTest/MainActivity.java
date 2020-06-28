@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.shenl.utils.MyCallback.TabSelectedListener;
 import com.shenl.utils.MyUtils.BroadcastUtils;
 import com.shenl.utils.MyUtils.DateUtils;
@@ -82,6 +81,7 @@ public class MainActivity extends BaseActivity {
         LinearLayoutManager manager = new LinearLayoutManager(MainActivity.this);
         sup_list.setLayoutManager(manager);
         sup_list.setRefreshEnabled(true);
+        sup_list.setLoadMoreEnabled(true);
         sup_list.setAdapter(new myAdapter(MainActivity.this, list));
         DateUtils.LimitedTime(DateUtils.DateToSecond("2019-11-23 00:00:00"), tdv_time);
     }
