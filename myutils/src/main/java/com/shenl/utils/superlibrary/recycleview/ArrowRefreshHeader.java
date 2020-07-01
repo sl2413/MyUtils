@@ -94,8 +94,8 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
     public void setProgressStyle(int style) {
         if(style == ProgressStyle.SysProgress){
-//            mProgressBar.setView(new ProgressBar(getContext(), null, android.R.attr.progressBarStyle));
-            mProgressBar.setView(new TextView(getContext()));
+            mProgressBar.setView(new ProgressBar(getContext(), null, android.R.attr.progressBarStyle));
+//            mProgressBar.setView(new TextView(getContext()));
         }else{
             AVLoadingIndicatorView progressView = new AVLoadingIndicatorView(this.getContext());
             progressView.setIndicatorColor(0xffB5B5B5);
