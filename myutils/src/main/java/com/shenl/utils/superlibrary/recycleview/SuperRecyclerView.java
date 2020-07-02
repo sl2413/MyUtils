@@ -56,7 +56,7 @@ public class SuperRecyclerView extends RecyclerView {
         LoadingMoreFooter footView = new LoadingMoreFooter(getContext());
         footView.setProgressStyle(mLoadingMoreProgressStyle);
         mLoadMoreFootView = footView;
-        mLoadMoreFootView.setVisibility(View.GONE);
+        mLoadMoreFootView.setVisibility(View.VISIBLE);
     }
 
     // 判断是否是SuperRecyclerView保留的itemViewType

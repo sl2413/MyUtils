@@ -6,13 +6,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.shenl.utils.MyCallback.TabSelectedListener;
 import com.shenl.utils.MyUtils.BroadcastUtils;
@@ -22,6 +25,7 @@ import com.shenl.utils.MyUtils.PageUtils;
 import com.shenl.utils.activity.BaseActivity;
 import com.shenl.utils.superlibrary.adapter.BaseViewHolder;
 import com.shenl.utils.superlibrary.adapter.SuperBaseAdapter;
+import com.shenl.utils.superlibrary.recycleview.ProgressStyle;
 import com.shenl.utils.superlibrary.recycleview.SuperRecyclerView;
 import com.shenl.utils.view.BadgeButton;
 import com.shenl.utils.view.SpinnerView;
@@ -82,6 +86,7 @@ public class MainActivity extends BaseActivity {
         sup_list.setLayoutManager(manager);
         sup_list.setRefreshEnabled(true);
         sup_list.setLoadMoreEnabled(true);
+        sup_list.setRefreshProgressStyle(ProgressStyle.LineSpinFadeLoader);
         sup_list.setAdapter(new myAdapter(MainActivity.this, list));
         DateUtils.LimitedTime(DateUtils.DateToSecond("2019-11-23 00:00:00"), tdv_time);
     }
@@ -99,6 +104,22 @@ public class MainActivity extends BaseActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 BadgeButton customView = (BadgeButton) tab.getCustomView();
                 PageUtils.showToast(MainActivity.this,customView.getText()+"");
+            }
+        });
+        sup_list.setLoadingListener(new SuperRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+
+            }
+
+            @Override
+            public void onLoadMore() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        sup_list.setNoMore(true);
+                    }
+                },3000);
             }
         });
     }
