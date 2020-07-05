@@ -369,7 +369,7 @@ public class FileUtils {
      * 作    者:   沈 亮
      * 创建时间:   2019/6/25
      */
-    interface ImageLoader {
+    public interface ImageLoader {
         void success(Bitmap bitmap);
     }
 

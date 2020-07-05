@@ -5,23 +5,40 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.util.Consumer;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.Gravity;
+import android.transition.Transition;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+import com.shenl.utils.MyCallback.PermissionListener;
 import com.shenl.utils.MyCallback.TabSelectedListener;
 import com.shenl.utils.MyUtils.BroadcastUtils;
 import com.shenl.utils.MyUtils.DateUtils;
 import com.shenl.utils.MyUtils.FileUtils;
 import com.shenl.utils.MyUtils.PageUtils;
+import com.shenl.utils.MyUtils.PhoneUtils;
+import com.shenl.utils.MyUtils.ShareUtils;
+import com.shenl.utils.MyUtils.ThreadUtils;
 import com.shenl.utils.activity.BaseActivity;
 import com.shenl.utils.superlibrary.adapter.BaseViewHolder;
 import com.shenl.utils.superlibrary.adapter.SuperBaseAdapter;
@@ -32,8 +49,15 @@ import com.shenl.utils.view.SpinnerView;
 import com.shenl.utils.view.TabView;
 import com.shenl.utils.view.TimeDataView;
 
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 public class MainActivity extends BaseActivity {
 
@@ -43,6 +67,7 @@ public class MainActivity extends BaseActivity {
     private TabLayout tabs;
     private SpinnerView sv_list;
     private List<String> list;
+    private ImageView iv_image;
 
 
     @Override
@@ -65,6 +90,7 @@ public class MainActivity extends BaseActivity {
     public void initView() {
         sv_list = findViewById(R.id.sv_list);
         sup_list = findViewById(R.id.sup_list);
+        iv_image = findViewById(R.id.iv_image);
         //倒计时
         tdv_time = findViewById(R.id.tdv_time);
         tabs = findViewById(R.id.tabs);
@@ -72,7 +98,6 @@ public class MainActivity extends BaseActivity {
         TabView.addTabItem(MainActivity.this,tabs,"扩展",R.mipmap.list_2,R.color.tab);
         TabView.addTabItem(MainActivity.this,tabs,"我的",R.mipmap.list_3,R.color.tab);
         tabs.getTabAt(0).select();
-
     }
 
     @Override
@@ -156,6 +181,31 @@ public class MainActivity extends BaseActivity {
 
     public void PlayVideo(View v){
         openActivity(PlayViewActivity.class);
+    }
+
+    public void Share(View v){
+        //动态需要请求的权限 ,例如下代码
+        final List<String> urls = new ArrayList<>();
+        urls.add("http://t7.baidu.com/it/u=378254553,3884800361&fm=79&app=86&f=JPEG?w=1280&h=2030");
+        urls.add("http://t8.baidu.com/it/u=3571592872,3353494284&fm=79&app=86&f=JPEG?w=1200&h=1290");
+        urls.add("http://m.qianrong.vip:8383/menuPic/2020/06/15/49c6e521d34d65b7ad9e40bfcbebbdc6.jpg");
+
+        final ArrayList<File> files = new ArrayList<>();
+        for (int i=0;i<urls.size();i++){
+            ShareUtils.CreateShareFile(MainActivity.this, urls.get(i), new ShareUtils.CallBack() {
+                @Override
+                public void Result(File file) {
+                    PageUtils.showLog("返出路径："+file.getAbsolutePath());
+                    files.add(file);
+                    if (urls.size() == files.size()){
+                        ShareUtils.ShareImage(MainActivity.this,files);
+                    }
+                }
+            });
+        }
+
+//        ShareUtils.ShareText(MainActivity.this,"12312312");
+
     }
 
     class myAdapter extends SuperBaseAdapter<String> {
