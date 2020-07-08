@@ -49,7 +49,9 @@ public abstract class HttpCallBack implements Callback.CommonCallback<String>{
 
     @Override
     public void onFinished() {
-        dialog.dismiss();
+        if (dialog != null){
+            dialog.dismiss();
+        }
         PageUtils.showLog("网络请求完毕");
     }
 }

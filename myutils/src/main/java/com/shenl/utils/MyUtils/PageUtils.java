@@ -131,6 +131,9 @@ public class PageUtils {
             case 5:
                 iv_style.setMovieResource(R.drawable.style5);
                 break;
+            case 6:
+                iv_style.setMovieResource(R.drawable.style6);
+                break;
         }
         dialog.setContentView(view,new LinearLayout.LayoutParams(PhoneUtils.getPhoneWidth(context)/4, ViewGroup.LayoutParams.WRAP_CONTENT));
         //使得点击对话框外部不消失对话框

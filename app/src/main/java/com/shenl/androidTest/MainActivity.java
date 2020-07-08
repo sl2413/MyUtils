@@ -184,7 +184,6 @@ public class MainActivity extends BaseActivity {
     }
 
     public void Share(View v){
-        //动态需要请求的权限 ,例如下代码
         final List<String> urls = new ArrayList<>();
         urls.add("http://t7.baidu.com/it/u=378254553,3884800361&fm=79&app=86&f=JPEG?w=1280&h=2030");
         urls.add("http://t8.baidu.com/it/u=3571592872,3353494284&fm=79&app=86&f=JPEG?w=1200&h=1290");

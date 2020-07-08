@@ -14,13 +14,18 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.shenl.utils.MyCallback.PermissionListener;
 import com.shenl.utils.MyUtils.PageUtils;
+import com.shenl.utils.R;
 import com.shenl.utils.application.AppManager;
 import com.shenl.utils.autolayout.AutoLayoutActivity;
 import com.shenl.utils.zxing.android.CaptureActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,9 +39,19 @@ public abstract class BaseActivity extends AutoLayoutActivity {
 
     private PermissionListener listener;
 
+    public LinearLayout base_root;
+    public RelativeLayout base_titleBar;
+    public RelativeLayout base_noNetOrData;
+    public LinearLayout base_noNet;
+    public TextView tv_net_retry;
+    public LinearLayout base_noData;
+    public TextView tv_pageTitle;
+    public ImageView iv_back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.setContentView(R.layout.activity_base);
         AppManager.getAppManager().addActivity(this);
         // 默认关闭系统键盘
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -52,6 +67,19 @@ public abstract class BaseActivity extends AutoLayoutActivity {
             ui &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //设置状态栏中字体颜色为白色
         }*/
         decor.setSystemUiVisibility(ui);
+
+        initBaseView();
+    }
+
+    private void initBaseView() {
+        base_root = findViewById(R.id.base_root);
+        base_titleBar = findViewById(R.id.base_titleBar);
+        iv_back = findViewById(R.id.iv_back);
+        tv_pageTitle = findViewById(R.id.tv_pageTitle);
+        base_noNetOrData = findViewById(R.id.base_noNetOrData);
+        base_noNet = findViewById(R.id.base_noNet);
+        tv_net_retry = findViewById(R.id.tv_net_retry);
+        base_noData = findViewById(R.id.base_noData);
     }
 
     /**
@@ -279,4 +307,61 @@ public abstract class BaseActivity extends AutoLayoutActivity {
             }
         }
     }
+
+
+    //添加状态
+    @Override
+    public void setContentView(int layoutResID) {
+        View view = getLayoutInflater().inflate(layoutResID, null);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        if (null != base_root) {
+            base_root.addView(view, lp);
+        }
+    }
+
+
+    /**
+     * 切换页面的布局
+     * @param pageState 页面状态 NORMAL  EMPTY  ERROR
+     */
+    public void changePageState(PageState pageState) {
+        switch (pageState) {
+            case NORMAL:
+                if (base_noNetOrData.getVisibility() == View.VISIBLE) {
+                    base_noNetOrData.setVisibility(View.GONE);
+                }
+                break;
+            case ERROR:
+                if (base_noNetOrData.getVisibility() == View.GONE) {
+                    base_noNetOrData.setVisibility(View.VISIBLE);
+                    base_noNet.setVisibility(View.VISIBLE);
+                    base_noData.setVisibility(View.GONE);
+                }
+                break;
+            case EMPTY:
+                if (base_noNetOrData.getVisibility() == View.GONE) {
+                    base_noNetOrData.setVisibility(View.VISIBLE);
+                    base_noNet.setVisibility(View.GONE);
+                    base_noData.setVisibility(View.VISIBLE);
+                }
+                break;
+        }
+    }
+
+
+    public enum PageState {
+        /**
+         * 数据内容显示正常
+         */
+        NORMAL,
+        /**
+         * 数据为空
+         */
+        EMPTY,
+        /**
+         * 数据加载失败
+         */
+        ERROR
+    }
 }
+
