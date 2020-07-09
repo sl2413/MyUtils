@@ -1,15 +1,10 @@
-package com.shenl.utils.activity;
+package com.qrandroid.project.activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +14,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.qrandroid.project.R;
 import com.shenl.utils.MyCallback.PermissionListener;
 import com.shenl.utils.MyUtils.PageUtils;
-import com.shenl.utils.R;
 import com.shenl.utils.application.AppManager;
 import com.shenl.utils.autolayout.AutoLayoutActivity;
 import com.shenl.utils.zxing.android.CaptureActivity;
@@ -47,6 +48,9 @@ public abstract class BaseActivity extends AutoLayoutActivity {
     public LinearLayout base_noData;
     public TextView tv_pageTitle;
     public ImageView iv_back;
+    public ImageView iv_pageTitle;
+    public TextView tv_desc;
+    public ImageView iv_desc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,9 @@ public abstract class BaseActivity extends AutoLayoutActivity {
         base_titleBar = findViewById(R.id.base_titleBar);
         iv_back = findViewById(R.id.iv_back);
         tv_pageTitle = findViewById(R.id.tv_pageTitle);
+        iv_pageTitle = findViewById(R.id.iv_pageTitle);
+        tv_desc = findViewById(R.id.tv_desc);
+        iv_desc = findViewById(R.id.iv_desc);
         base_noNetOrData = findViewById(R.id.base_noNetOrData);
         base_noNet = findViewById(R.id.base_noNet);
         tv_net_retry = findViewById(R.id.tv_net_retry);
@@ -307,6 +314,7 @@ public abstract class BaseActivity extends AutoLayoutActivity {
             }
         }
     }
+
 
 
     //添加状态
