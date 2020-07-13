@@ -207,6 +207,10 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    public void Loading(View v){
+        PageUtils.showDialog(MainActivity.this,1);
+    }
+
     class myAdapter extends SuperBaseAdapter<String> {
 
         public myAdapter(Context context, List<String> data) {

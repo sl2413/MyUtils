@@ -103,14 +103,28 @@ public class PageUtils {
     }
 
     /**
-     * TODO 功能：显示一个带样式的不确定进度对话框并且可以自定义提交消息
+     * TODO 功能：显示一个自定义的环载
      *
      * 参数说明: ProgressStyle为样式编号
      * 作    者:   沈  亮
      * 创建时间:   2020/6/3
      */
     public static Dialog showDialog(Context context,int ProgressStyle){
+        return showDialog(context,ProgressStyle,false);
+    }
+
+    /**
+     * TODO 功能：显示一个自定义的环载
+     *
+     * 参数说明:
+     * 作    者:   沈  亮
+     * 创建时间:   2020/7/13
+     */
+    public static Dialog showDialog(Context context,int ProgressStyle,boolean isShading){
         final Dialog dialog = new Dialog(context, R.style.Theme_AppCompat_Dialog);
+        if (!isShading){
+            dialog.getWindow().setDimAmount(0f);//核心代码 解决了无法去除遮罩问题
+        }
         Window dialogWindow = dialog.getWindow();
         dialogWindow.setBackgroundDrawableResource(android.R.color.transparent);// 一句话搞定
         View view = View.inflate(context, R.layout.progress_style, null);

@@ -59,6 +59,12 @@
         android:text="安卓分享"
         android:onClick="Share"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="打开环载"
+        android:onClick="Loading"/>
+
     <ImageView
         android:id="@+id/iv_image"
         android:layout_width="300dp"
