@@ -1,14 +1,17 @@
 package com.shenl.utils.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
@@ -18,7 +21,9 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.shenl.utils.MyCallback.PermissionListener;
+import com.shenl.utils.MyUtils.NetUtils;
 import com.shenl.utils.MyUtils.PageUtils;
+import com.shenl.utils.R;
 import com.shenl.utils.application.AppManager;
 import com.shenl.utils.autolayout.AutoLayoutActivity;
 import com.shenl.utils.zxing.android.CaptureActivity;
@@ -35,16 +40,42 @@ public abstract class BaseFragmentActivity extends AutoLayoutActivity {
     private int REQUEST_PERMISSION_CODE = 2;
 
     private PermissionListener listener;
+    private NetBroadcastReceiver netBroadcastReceiver;
+    private IntentFilter filter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //添加当前启动的activity进AppManager
         AppManager.getAppManager().addActivity(this);
         // 默认关闭系统键盘
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         //String name1 = getClass().getName();//获取全类名
         //String name2 = getClass().getSimpleName();//获取类名
         //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //显示状态栏
+        setTranslucent(BaseFragmentActivity.this);
+
+        //Android 7.0以上需要动态注册
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            //实例化IntentFilter对象
+            filter = new IntentFilter();
+            filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+            netBroadcastReceiver = new NetBroadcastReceiver();
+            //注册广播接收
+            registerReceiver(this.netBroadcastReceiver, filter);
+        }else{
+            //实例化IntentFilter对象
+            filter = new IntentFilter();
+            filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+            netBroadcastReceiver = new NetBroadcastReceiver();
+            //注册广播接收
+            registerReceiver(netBroadcastReceiver, filter);
+            setContentView(initLayout());
+            initView();
+            initData();
+            initEvent();
+        }
+
         View decor = getWindow().getDecorView();
         int ui = decor.getSystemUiVisibility();
         ui |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //设置状态栏中字体的颜色为黑色
@@ -54,6 +85,51 @@ public abstract class BaseFragmentActivity extends AutoLayoutActivity {
             ui &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //设置状态栏中字体颜色为白色
         }*/
         decor.setSystemUiVisibility(ui);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(netBroadcastReceiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //注册广播接收
+        registerReceiver(netBroadcastReceiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(netBroadcastReceiver);
+    }
+
+    /**
+     * TODO 功能：监听网络状态广播
+     *
+     * 参数说明:
+     * 作    者:   沈  亮
+     * 创建时间:   2020/7/15
+     */
+    class NetBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // 如果相等的话就说明网络状态发生了变化
+            if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                int netWorkState = NetUtils.getNetWorkState(context);
+                // 当网络发生变化，判断当前网络状态，并通过NetEvent回调当前网络状态
+                if (netWorkState == NetUtils.NETWORK_NONE){
+                    setContentView(R.layout.activity_net_error);
+                }else{
+                    setContentView(initLayout());
+                    initView();
+                    initData();
+                    initEvent();
+                }
+            }
+        }
     }
 
     /**
@@ -87,6 +163,15 @@ public abstract class BaseFragmentActivity extends AutoLayoutActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    /**
+     * TODO 功能：初始化要加载的布局
+     *
+     * 参数说明:
+     * 作    者:   沈  亮
+     * 创建时间:   2020/7/15
+     */
+    protected abstract int initLayout();
 
     /**
      * TODO 功能：用于初始化界面布局

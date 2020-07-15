@@ -54,7 +54,7 @@ public abstract class BaseActivity extends AutoLayoutActivity {
         //String name1 = getClass().getName();//获取全类名
         //String name2 = getClass().getSimpleName();//获取类名
         //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //显示状态栏
-
+        setTranslucent(BaseActivity.this);
 
         //Android 7.0以上需要动态注册
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
