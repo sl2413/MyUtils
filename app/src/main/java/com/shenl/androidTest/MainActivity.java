@@ -5,19 +5,10 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.util.Consumer;
 import android.support.v7.widget.LinearLayoutManager;
-import android.transition.Transition;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,20 +16,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.FutureTarget;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
-import com.shenl.utils.MyCallback.PermissionListener;
 import com.shenl.utils.MyCallback.TabSelectedListener;
 import com.shenl.utils.MyUtils.BroadcastUtils;
 import com.shenl.utils.MyUtils.DateUtils;
 import com.shenl.utils.MyUtils.FileUtils;
 import com.shenl.utils.MyUtils.PageUtils;
-import com.shenl.utils.MyUtils.PhoneUtils;
 import com.shenl.utils.MyUtils.ShareUtils;
-import com.shenl.utils.MyUtils.ThreadUtils;
 import com.shenl.utils.activity.BaseActivity;
 import com.shenl.utils.superlibrary.adapter.BaseViewHolder;
 import com.shenl.utils.superlibrary.adapter.SuperBaseAdapter;
@@ -49,15 +32,9 @@ import com.shenl.utils.view.SpinnerView;
 import com.shenl.utils.view.TabView;
 import com.shenl.utils.view.TimeDataView;
 
-import org.xutils.common.Callback;
-import org.xutils.http.RequestParams;
-import org.xutils.x;
-
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 public class MainActivity extends BaseActivity {
 
@@ -71,9 +48,7 @@ public class MainActivity extends BaseActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected int initLayout() {
         PageUtils.createNotificationChannel(MainActivity.this, "1", "name", 1);
         receiver = BroadcastUtils.StartBroadcast(MainActivity.this, "shenl", new BroadcastUtils.ReceiverListener() {
             @Override
@@ -81,9 +56,7 @@ public class MainActivity extends BaseActivity {
                 PageUtils.showLog("广播接收到");
             }
         });
-        initView();
-        initData();
-        initEvent();
+        return R.layout.activity_main;
     }
 
     @Override

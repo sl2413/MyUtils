@@ -1,8 +1,12 @@
 package com.shenl.utils.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,22 +14,20 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import com.shenl.utils.MyCallback.PermissionListener;
+import com.shenl.utils.MyUtils.NetUtils;
 import com.shenl.utils.MyUtils.PageUtils;
 import com.shenl.utils.R;
 import com.shenl.utils.application.AppManager;
 import com.shenl.utils.autolayout.AutoLayoutActivity;
 import com.shenl.utils.zxing.android.CaptureActivity;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,34 +35,48 @@ public abstract class BaseActivity extends AutoLayoutActivity {
 
     // 记录用户首次点击返回键的时间
     private long firstTime = 0;
-
     //授权标识, 主要用于操作返回状态
     private int REQUEST_PERMISSION_CODE = 2;
-
     private PermissionListener listener;
-
-    public LinearLayout base_root;
-    public RelativeLayout base_titleBar;
     public RelativeLayout base_noNetOrData;
     public LinearLayout base_noNet;
-    public TextView tv_net_retry;
     public LinearLayout base_noData;
-    public TextView tv_pageTitle;
-    public ImageView iv_back;
-    public ImageView iv_pageTitle;
-    public TextView tv_desc;
-    public ImageView iv_desc;
+    private NetBroadcastReceiver netBroadcastReceiver;
+    private IntentFilter filter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.setContentView(R.layout.activity_base);
+        //添加当前启动的activity进AppManager
         AppManager.getAppManager().addActivity(this);
         // 默认关闭系统键盘
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         //String name1 = getClass().getName();//获取全类名
         //String name2 = getClass().getSimpleName();//获取类名
         //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //显示状态栏
+
+
+        //Android 7.0以上需要动态注册
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            //实例化IntentFilter对象
+            filter = new IntentFilter();
+            filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+            netBroadcastReceiver = new NetBroadcastReceiver();
+            //注册广播接收
+            registerReceiver(netBroadcastReceiver, filter);
+        }else{
+            //实例化IntentFilter对象
+            filter = new IntentFilter();
+            filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+            netBroadcastReceiver = new NetBroadcastReceiver();
+            //注册广播接收
+            registerReceiver(netBroadcastReceiver, filter);
+            setContentView(initLayout());
+            initView();
+            initData();
+            initEvent();
+        }
+
         View decor = getWindow().getDecorView();
         int ui = decor.getSystemUiVisibility();
         ui |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //设置状态栏中字体的颜色为黑色
@@ -70,22 +86,51 @@ public abstract class BaseActivity extends AutoLayoutActivity {
             ui &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //设置状态栏中字体颜色为白色
         }*/
         decor.setSystemUiVisibility(ui);
-
-        initBaseView();
     }
 
-    private void initBaseView() {
-        base_root = findViewById(R.id.base_root);
-        base_titleBar = findViewById(R.id.base_titleBar);
-        iv_back = findViewById(R.id.iv_back);
-        tv_pageTitle = findViewById(R.id.tv_pageTitle);
-        iv_pageTitle = findViewById(R.id.iv_pageTitle);
-        tv_desc = findViewById(R.id.tv_desc);
-        iv_desc = findViewById(R.id.iv_desc);
-        base_noNetOrData = findViewById(R.id.base_noNetOrData);
-        base_noNet = findViewById(R.id.base_noNet);
-        tv_net_retry = findViewById(R.id.tv_net_retry);
-        base_noData = findViewById(R.id.base_noData);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(netBroadcastReceiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //注册广播接收
+        registerReceiver(netBroadcastReceiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(netBroadcastReceiver);
+    }
+
+    /**
+     * TODO 功能：监听网络状态广播
+     *
+     * 参数说明:
+     * 作    者:   沈  亮
+     * 创建时间:   2020/7/15
+     */
+    class NetBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // 如果相等的话就说明网络状态发生了变化
+            if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                int netWorkState = NetUtils.getNetWorkState(context);
+                // 当网络发生变化，判断当前网络状态，并通过NetEvent回调当前网络状态
+                if (netWorkState == NetUtils.NETWORK_NONE){
+                    setContentView(R.layout.activity_net_error);
+                }else{
+                    setContentView(initLayout());
+                    initView();
+                    initData();
+                    initEvent();
+                }
+            }
+        }
     }
 
     /**
@@ -121,13 +166,22 @@ public abstract class BaseActivity extends AutoLayoutActivity {
     }
 
     /**
+     * TODO 功能：初始化要加载的布局
+     *
+     * 参数说明:
+     * 作    者:   沈  亮
+     * 创建时间:   2020/7/15
+     */
+    protected abstract int initLayout();
+
+    /**
      * TODO 功能：用于初始化界面布局
      * <p>
      * 参数说明:
      * 作 者:  沈 亮
      * 创建时间:  下午10:46:05
      */
-    public abstract void initView();
+    protected abstract void initView();
 
     /**
      * TODO 功能：用于初始化界面上的数据
@@ -136,7 +190,7 @@ public abstract class BaseActivity extends AutoLayoutActivity {
      * 作    者:   沈 亮
      * 创建时间:   2017/11/9
      */
-    public abstract void initData();
+    protected abstract void initData();
 
     /**
      * TODO 功能：用于初始化界面上的事件
@@ -145,7 +199,7 @@ public abstract class BaseActivity extends AutoLayoutActivity {
      * 作    者:   沈 亮
      * 创建时间:   2017/11/9
      */
-    public abstract void initEvent();
+    protected abstract void initEvent();
 
     /**
      * TODO 功能：需要数据传递的跳转activity
@@ -313,19 +367,6 @@ public abstract class BaseActivity extends AutoLayoutActivity {
             }
         }
     }
-
-
-
-    //添加状态
-    @Override
-    public void setContentView(int layoutResID) {
-        View view = getLayoutInflater().inflate(layoutResID, null);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        if (null != base_root) {
-            base_root.addView(view, lp);
-        }
-    }
-
 
     /**
      * 切换页面的布局
