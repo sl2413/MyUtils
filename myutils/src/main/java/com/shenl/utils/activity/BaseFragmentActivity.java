@@ -42,6 +42,7 @@ public abstract class BaseFragmentActivity extends AutoLayoutActivity {
     private PermissionListener listener;
     private NetBroadcastReceiver netBroadcastReceiver;
     private IntentFilter filter;
+    private boolean isReceiver = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,10 @@ public abstract class BaseFragmentActivity extends AutoLayoutActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(netBroadcastReceiver);
+        if (isReceiver){
+            unregisterReceiver(netBroadcastReceiver);
+            isReceiver = false;
+        }
     }
 
     @Override
@@ -103,7 +107,10 @@ public abstract class BaseFragmentActivity extends AutoLayoutActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(netBroadcastReceiver);
+        if (isReceiver){
+            unregisterReceiver(netBroadcastReceiver);
+            isReceiver = false;
+        }
     }
 
     /**

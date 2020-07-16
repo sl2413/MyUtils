@@ -23,6 +23,7 @@ import com.shenl.utils.MyUtils.FileUtils;
 import com.shenl.utils.MyUtils.PageUtils;
 import com.shenl.utils.MyUtils.ShareUtils;
 import com.shenl.utils.activity.BaseActivity;
+import com.shenl.utils.activity.BaseFragmentActivity;
 import com.shenl.utils.superlibrary.adapter.BaseViewHolder;
 import com.shenl.utils.superlibrary.adapter.SuperBaseAdapter;
 import com.shenl.utils.superlibrary.recycleview.ProgressStyle;
@@ -153,6 +154,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void PlayVideo(View v){
+        openActivity(Main2Activity.class);
     }
 
     public void Share(View v){

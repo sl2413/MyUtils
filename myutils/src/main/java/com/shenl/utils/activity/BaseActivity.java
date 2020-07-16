@@ -43,6 +43,7 @@ public abstract class BaseActivity extends AutoLayoutActivity {
     public LinearLayout base_noData;
     private NetBroadcastReceiver netBroadcastReceiver;
     private IntentFilter filter;
+    private boolean isReceiver = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public abstract class BaseActivity extends AutoLayoutActivity {
             netBroadcastReceiver = new NetBroadcastReceiver();
             //注册广播接收
             registerReceiver(netBroadcastReceiver, filter);
+            isReceiver = true;
         }else{
             //实例化IntentFilter对象
             filter = new IntentFilter();
@@ -70,6 +72,7 @@ public abstract class BaseActivity extends AutoLayoutActivity {
             netBroadcastReceiver = new NetBroadcastReceiver();
             //注册广播接收
             registerReceiver(netBroadcastReceiver, filter);
+            isReceiver = true;
             setContentView(initLayout());
             initView();
             initData();
@@ -90,7 +93,10 @@ public abstract class BaseActivity extends AutoLayoutActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(netBroadcastReceiver);
+        if (isReceiver){
+            unregisterReceiver(netBroadcastReceiver);
+            isReceiver = false;
+        }
     }
 
     @Override
@@ -103,7 +109,10 @@ public abstract class BaseActivity extends AutoLayoutActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(netBroadcastReceiver);
+        if (isReceiver){
+            unregisterReceiver(netBroadcastReceiver);
+            isReceiver = false;
+        }
     }
 
     /**
