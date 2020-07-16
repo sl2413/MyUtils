@@ -153,7 +153,6 @@ public class MainActivity extends BaseActivity {
     }
 
     public void PlayVideo(View v){
-        openActivity(PlayViewActivity.class);
     }
 
     public void Share(View v){
