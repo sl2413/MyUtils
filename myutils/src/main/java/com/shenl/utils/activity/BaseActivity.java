@@ -55,7 +55,7 @@ public abstract class BaseActivity extends AutoLayoutActivity {
         //String name2 = getClass().getSimpleName();//获取类名
         //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //显示状态栏
 
-        //Android 7.0以上需要动态注册
+        //Android 6.0以上需要动态注册
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             //实例化IntentFilter对象
             filter = new IntentFilter();
