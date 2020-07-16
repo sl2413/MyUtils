@@ -61,7 +61,7 @@ public abstract class BaseActivity extends AutoLayoutActivity {
             //实例化IntentFilter对象
             filter = new IntentFilter();
             filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-            netBroadcastReceiver = new NetBroadcastReceiver();
+            netBroadcastReceiver = new NetBroadcastReceiver(true);
             //注册广播接收
             registerReceiver(netBroadcastReceiver, filter);
             isReceiver = true;
@@ -69,7 +69,7 @@ public abstract class BaseActivity extends AutoLayoutActivity {
             //实例化IntentFilter对象
             filter = new IntentFilter();
             filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-            netBroadcastReceiver = new NetBroadcastReceiver();
+            netBroadcastReceiver = new NetBroadcastReceiver(true);
             //注册广播接收
             registerReceiver(netBroadcastReceiver, filter);
             isReceiver = true;
@@ -103,6 +103,8 @@ public abstract class BaseActivity extends AutoLayoutActivity {
     protected void onResume() {
         super.onResume();
         //注册广播接收
+        //注册广播接收
+        netBroadcastReceiver = new NetBroadcastReceiver(false);
         registerReceiver(netBroadcastReceiver, filter);
     }
 
@@ -123,6 +125,12 @@ public abstract class BaseActivity extends AutoLayoutActivity {
      * 创建时间:   2020/7/15
      */
     class NetBroadcastReceiver extends BroadcastReceiver {
+
+        private boolean isLoading;
+
+        public NetBroadcastReceiver(boolean isLoading){
+            this.isLoading = isLoading;
+        }
         @Override
         public void onReceive(Context context, Intent intent) {
             // 如果相等的话就说明网络状态发生了变化
@@ -132,10 +140,12 @@ public abstract class BaseActivity extends AutoLayoutActivity {
                 if (netWorkState == NetUtils.NETWORK_NONE){
                     setContentView(R.layout.activity_net_error);
                 }else{
-                    setContentView(initLayout());
-                    initView();
-                    initData();
-                    initEvent();
+                    if (isLoading){
+                        setContentView(initLayout());
+                        initView();
+                        initData();
+                        initEvent();
+                    }
                 }
             }
         }

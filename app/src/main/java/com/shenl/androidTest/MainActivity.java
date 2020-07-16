@@ -50,6 +50,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected int initLayout() {
+        PageUtils.showLog("页面打开");
         PageUtils.createNotificationChannel(MainActivity.this, "1", "name", 1);
         receiver = BroadcastUtils.StartBroadcast(MainActivity.this, "shenl", new BroadcastUtils.ReceiverListener() {
             @Override
