@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,7 +83,8 @@ public class MainActivity extends BaseActivity {
             list.add("条目" + i);
         }
         sv_list.setAdapter(new svAdapter(list));
-        LinearLayoutManager manager = new LinearLayoutManager(MainActivity.this);
+//        LinearLayoutManager manager = new LinearLayoutManager(MainActivity.this);
+        GridLayoutManager manager = new GridLayoutManager(MainActivity.this, 2);
         sup_list.setLayoutManager(manager);
         sup_list.setRefreshEnabled(true);
         sup_list.setLoadMoreEnabled(true);

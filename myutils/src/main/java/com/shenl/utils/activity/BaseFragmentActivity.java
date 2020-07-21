@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
@@ -53,29 +54,33 @@ public abstract class BaseFragmentActivity extends AutoLayoutActivity {
         // 默认关闭系统键盘
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         //String name1 = getClass().getName();//获取全类名
-        //String name2 = getClass().getSimpleName();//获取类名
+        String name2 = getClass().getSimpleName();//获取类名
         //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //显示状态栏
 
 
-        //Android 6.0以上需要动态注册
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //实例化IntentFilter对象
-            filter = new IntentFilter();
-            filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-            netBroadcastReceiver = new NetBroadcastReceiver(true);
-            //注册广播接收
-            registerReceiver(this.netBroadcastReceiver, filter);
-        }else{
-            //实例化IntentFilter对象
-            filter = new IntentFilter();
-            filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-            netBroadcastReceiver = new NetBroadcastReceiver(true);
-            //注册广播接收
-            registerReceiver(netBroadcastReceiver, filter);
-            setContentView(initLayout());
-            initView();
-            initData();
-            initEvent();
+        if (!name2.equals("MainActivity")){
+            //Android 6.0以上需要动态注册
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                //实例化IntentFilter对象
+                filter = new IntentFilter();
+                filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+                netBroadcastReceiver = new NetBroadcastReceiver(true);
+                //注册广播接收
+                registerReceiver(netBroadcastReceiver, filter);
+                isReceiver = true;
+            }else{
+                //实例化IntentFilter对象
+                filter = new IntentFilter();
+                filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+                netBroadcastReceiver = new NetBroadcastReceiver(true);
+                //注册广播接收
+                registerReceiver(netBroadcastReceiver, filter);
+                isReceiver = true;
+                setContentView(initLayout());
+                initView();
+                initData();
+                initEvent();
+            }
         }
 
         View decor = getWindow().getDecorView();
@@ -87,6 +92,8 @@ public abstract class BaseFragmentActivity extends AutoLayoutActivity {
             ui &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //设置状态栏中字体颜色为白色
         }*/
         decor.setSystemUiVisibility(ui);
+
+        makeStatusBarTransparent(this);
     }
 
     @Override
@@ -113,6 +120,30 @@ public abstract class BaseFragmentActivity extends AutoLayoutActivity {
             unregisterReceiver(netBroadcastReceiver);
             isReceiver = false;
         }
+    }
+
+    /**
+     * TODO 功能：设置透明状态栏
+     *
+     * 参数说明:
+     * 作    者:   沈  亮
+     * 创建时间:   2020/7/21
+     */
+    public static void makeStatusBarTransparent(Activity activity) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
+        Window window = activity.getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            int option = window.getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            window.getDecorView().setSystemUiVisibility(option);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        } else {
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
     }
 
     /**
