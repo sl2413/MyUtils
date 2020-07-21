@@ -45,6 +45,7 @@ public abstract class BaseFragmentActivity extends AutoLayoutActivity {
     private NetBroadcastReceiver netBroadcastReceiver;
     private IntentFilter filter;
     private boolean isReceiver = false;
+    private String name2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,8 @@ public abstract class BaseFragmentActivity extends AutoLayoutActivity {
         // 默认关闭系统键盘
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         //String name1 = getClass().getName();//获取全类名
-        String name2 = getClass().getSimpleName();//获取类名
+        //获取类名
+        name2 = getClass().getSimpleName();
         //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //显示状态栏
 
 
@@ -109,8 +111,10 @@ public abstract class BaseFragmentActivity extends AutoLayoutActivity {
     protected void onResume() {
         super.onResume();
         //注册广播接收
-        netBroadcastReceiver = new NetBroadcastReceiver(false);
-        registerReceiver(netBroadcastReceiver, filter);
+        if (!name2.equals("MainActivity")){
+            netBroadcastReceiver = new NetBroadcastReceiver(false);
+            registerReceiver(netBroadcastReceiver, filter);
+        }
     }
 
     @Override
