@@ -59,7 +59,6 @@ public abstract class BaseFragmentActivity extends AutoLayoutActivity {
         name2 = getClass().getSimpleName();
         //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //显示状态栏
 
-
         if (!name2.equals("MainActivity")){
             //Android 6.0以上需要动态注册
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -83,6 +82,11 @@ public abstract class BaseFragmentActivity extends AutoLayoutActivity {
                 initData();
                 initEvent();
             }
+        }else{
+            setContentView(initLayout());
+            initView();
+            initData();
+            initEvent();
         }
 
         View decor = getWindow().getDecorView();
