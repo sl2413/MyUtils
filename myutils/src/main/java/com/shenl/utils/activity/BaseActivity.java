@@ -22,7 +22,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import com.shenl.utils.MyCallback.PermissionListener;
 import com.shenl.utils.MyUtils.NetUtils;
 import com.shenl.utils.MyUtils.PageUtils;
@@ -30,7 +29,6 @@ import com.shenl.utils.R;
 import com.shenl.utils.application.AppManager;
 import com.shenl.utils.autolayout.AutoLayoutActivity;
 import com.shenl.utils.zxing.android.CaptureActivity;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +45,6 @@ public abstract class BaseActivity extends AutoLayoutActivity {
     private NetBroadcastReceiver netBroadcastReceiver;
     private IntentFilter filter;
     private boolean isReceiver = false;
-    private String name2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,33 +55,26 @@ public abstract class BaseActivity extends AutoLayoutActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         //String name1 = getClass().getName();//获取全类名
         //获取类名
-        name2 = getClass().getSimpleName();
+        //String name2 = getClass().getSimpleName();
         //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //显示状态栏
-        PageUtils.showLog(name2);
-        if (!name2.equals("MainActivity")){
-            //Android 6.0以上需要动态注册
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                //实例化IntentFilter对象
-                filter = new IntentFilter();
-                filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-                netBroadcastReceiver = new NetBroadcastReceiver(true);
-                //注册广播接收
-                registerReceiver(netBroadcastReceiver, filter);
-                isReceiver = true;
-            }else{
-                //实例化IntentFilter对象
-                filter = new IntentFilter();
-                filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-                netBroadcastReceiver = new NetBroadcastReceiver(true);
-                //注册广播接收
-                registerReceiver(netBroadcastReceiver, filter);
-                isReceiver = true;
-                setContentView(initLayout());
-                initView();
-                initData();
-                initEvent();
-            }
+
+        //Android 6.0以上需要动态注册
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //实例化IntentFilter对象
+            filter = new IntentFilter();
+            filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+            netBroadcastReceiver = new NetBroadcastReceiver(true);
+            //注册广播接收
+            registerReceiver(netBroadcastReceiver, filter);
+            isReceiver = true;
         }else{
+            //实例化IntentFilter对象
+            filter = new IntentFilter();
+            filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+            netBroadcastReceiver = new NetBroadcastReceiver(true);
+            //注册广播接收
+            registerReceiver(netBroadcastReceiver, filter);
+            isReceiver = true;
             setContentView(initLayout());
             initView();
             initData();
@@ -117,10 +107,10 @@ public abstract class BaseActivity extends AutoLayoutActivity {
     protected void onResume() {
         super.onResume();
         //注册广播接收
-        if (!name2.equals("MainActivity")){
+        /*if (!isReceiver){
             netBroadcastReceiver = new NetBroadcastReceiver(false);
             registerReceiver(netBroadcastReceiver, filter);
-        }
+        }*/
     }
 
     @Override
@@ -154,6 +144,20 @@ public abstract class BaseActivity extends AutoLayoutActivity {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
         activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+    }
+
+    /**
+     * TODO 功能：停止网络状态的监听
+     *
+     * 参数说明:
+     * 作    者:   沈  亮
+     * 创建时间:   2020/7/22
+     */
+    public void StopNewWorkReceiver(){
+        if (netBroadcastReceiver != null){
+            unregisterReceiver(netBroadcastReceiver);
+            isReceiver = false;
+        }
     }
 
     /**

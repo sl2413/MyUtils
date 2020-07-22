@@ -48,7 +48,7 @@ public class Main2Activity extends BaseActivity {
         tv.setText("123123123123");
         myAdapter.addHeaderView(tv);
 
-
+        StopNewWorkReceiver();
     }
 
     @Override

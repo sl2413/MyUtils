@@ -51,7 +51,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected int initLayout() {
-        PageUtils.showLog("页面打开");
         PageUtils.createNotificationChannel(MainActivity.this, "1", "name", 1);
         receiver = BroadcastUtils.StartBroadcast(MainActivity.this, "shenl", new BroadcastUtils.ReceiverListener() {
             @Override
@@ -91,6 +90,8 @@ public class MainActivity extends BaseActivity {
         sup_list.setRefreshProgressStyle(ProgressStyle.LineSpinFadeLoader);
         sup_list.setAdapter(new myAdapter(MainActivity.this, list));
         DateUtils.LimitedTime(DateUtils.DateToSecond("2019-11-23 00:00:00"), tdv_time);
+
+        StopNewWorkReceiver();
     }
 
     @Override
