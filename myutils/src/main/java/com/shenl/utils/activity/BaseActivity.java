@@ -155,8 +155,12 @@ public abstract class BaseActivity extends AutoLayoutActivity {
      */
     public void StopNewWorkReceiver(){
         if (netBroadcastReceiver != null){
-            unregisterReceiver(netBroadcastReceiver);
-            isReceiver = false;
+            try{
+                unregisterReceiver(netBroadcastReceiver);
+                isReceiver = false;
+            }catch (Exception e){
+                isReceiver = false;
+            }
         }
     }
 
