@@ -306,6 +306,7 @@ public abstract class SuperBaseAdapter<T> extends RecyclerView.Adapter<BaseViewH
             }
         }
         index = index >= mHeaderLayout.getChildCount() ? -1 : index;
+        mHeaderLayout.setPadding(0,0,0,0);
         mHeaderLayout.addView(header, index);
         this.notifyDataSetChanged();
     }
@@ -327,6 +328,7 @@ public abstract class SuperBaseAdapter<T> extends RecyclerView.Adapter<BaseViewH
             }
         }
         index = index >= mFooterLayout.getChildCount() ? -1 : index;
+        mFooterLayout.setPadding(0,0,0,0);
         mFooterLayout.addView(footer, index);
         this.notifyDataSetChanged();
     }
