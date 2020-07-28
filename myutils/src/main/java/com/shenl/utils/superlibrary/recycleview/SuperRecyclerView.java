@@ -88,7 +88,7 @@ public class SuperRecyclerView extends RecyclerView {
             ((LoadingMoreFooter) mLoadMoreFootView).setState(
                     isNoMore ? LoadingMoreFooter.STATE_NOMORE : LoadingMoreFooter.STATE_COMPLETE);
         } else {
-            mLoadMoreFootView.setVisibility(View.VISIBLE);
+            mLoadMoreFootView.setVisibility(View.GONE);
         }
     }
 
@@ -255,7 +255,7 @@ public class SuperRecyclerView extends RecyclerView {
                 if (loadingMoreEnabled) {
                     emptyCount++;
                 }
-                if (adapter.getItemCount() <= emptyCount) {
+                if (adapter.getItemCount() == emptyCount) {
                     mEmptyView.setVisibility(View.VISIBLE);
                     SuperRecyclerView.this.setVisibility(View.GONE);
                 } else {
