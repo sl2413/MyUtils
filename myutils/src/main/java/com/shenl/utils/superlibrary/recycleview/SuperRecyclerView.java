@@ -248,13 +248,13 @@ public class SuperRecyclerView extends RecyclerView {
         public void onChanged() {
             Adapter<?> adapter = getAdapter();
             if (adapter != null && mEmptyView != null) {
-                int emptyCount = 0;
+                /*int emptyCount = 0;
                 if (refreshEnabled) {
                     emptyCount++;
                 }
                 if (loadingMoreEnabled) {
                     emptyCount++;
-                }
+                }*/
                 if (adapter.getItemCount() == 2) {
                     mEmptyView.setVisibility(View.VISIBLE);
                     SuperRecyclerView.this.setVisibility(View.GONE);
