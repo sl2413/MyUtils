@@ -255,7 +255,7 @@ public class SuperRecyclerView extends RecyclerView {
                 if (loadingMoreEnabled) {
                     emptyCount++;
                 }
-                if (adapter.getItemCount() == emptyCount) {
+                if (adapter.getItemCount() == 2) {
                     mEmptyView.setVisibility(View.VISIBLE);
                     SuperRecyclerView.this.setVisibility(View.GONE);
                 } else {
