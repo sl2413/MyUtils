@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.graphics.Palette;
 import android.util.DisplayMetrics;
@@ -195,6 +196,50 @@ public class FileUtils {
                 }
             }
         }).start();
+    }
+
+    /**
+     * TODO 功能：图片保存到手机
+     *
+     * 参数说明:
+     * 作    者:   沈  亮
+     * 创建时间:   2020/7/31
+     */
+    private void ImageToLocal(Context context,ImageView img) {
+        img.buildDrawingCache();
+        Bitmap bitmap=img.getDrawingCache();
+        //将Bitmap 转换成二进制，写入本地
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG , 100 , stream);
+        byte[] byteArray = stream.toByteArray();
+        File dir=new File(Environment.getExternalStorageDirectory ().getAbsolutePath()+"/picture" );
+        if(!dir.isFile()){
+            dir.mkdir();
+        }
+        String fileName=System.currentTimeMillis() +".png";
+        File file=new File(dir,fileName);
+        try {
+            FileOutputStream fos=new FileOutputStream(file);
+            fos.write(byteArray, 0 , byteArray.length);
+            fos.flush();
+            fos.close();
+            //用广播通知相册进行更新相册
+            // 把文件插入到系统图库
+            try {
+                MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), fileName, null);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            // 最后通知图库更新
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file.getPath())));
+            PageUtils.showToast(context,"保存成功");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            PageUtils.showToast(context,"保存失败");
+        } catch (IOException e) {
+            e.printStackTrace();
+            PageUtils.showToast(context,"保存失败");
+        }
     }
 
     /**
