@@ -154,9 +154,13 @@ public abstract class BaseFragmentActivity extends AutoLayoutActivity {
      * 创建时间:   2020/7/22
      */
     public void StopNewWorkReceiver(){
-        if (isReceiver){
-            unregisterReceiver(netBroadcastReceiver);
-            isReceiver = false;
+        if (netBroadcastReceiver != null){
+            try{
+                unregisterReceiver(netBroadcastReceiver);
+                isReceiver = false;
+            }catch (Exception e){
+                isReceiver = false;
+            }
         }
     }
 
@@ -177,20 +181,24 @@ public abstract class BaseFragmentActivity extends AutoLayoutActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            // 如果相等的话就说明网络状态发生了变化
-            if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-                int netWorkState = NetUtils.getNetWorkState(context);
-                // 当网络发生变化，判断当前网络状态，并通过NetEvent回调当前网络状态
-                if (netWorkState == NetUtils.NETWORK_NONE){
-                    setContentView(R.layout.activity_net_error);
-                }else{
-                    if (isLoading){
-                        setContentView(initLayout());
-                        initView();
-                        initData();
-                        initEvent();
+            try{
+                // 如果相等的话就说明网络状态发生了变化
+                if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                    int netWorkState = NetUtils.getNetWorkState(context);
+                    // 当网络发生变化，判断当前网络状态，并通过NetEvent回调当前网络状态
+                    if (netWorkState == NetUtils.NETWORK_NONE){
+                        setContentView(R.layout.activity_net_error);
+                    }else{
+                        if (isLoading){
+                            setContentView(initLayout());
+                            initView();
+                            initData();
+                            initEvent();
+                        }
                     }
                 }
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
     }

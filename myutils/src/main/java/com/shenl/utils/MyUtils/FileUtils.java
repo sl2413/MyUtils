@@ -20,13 +20,11 @@ import android.support.v7.graphics.Palette;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.ImageView;
-
 import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.shenl.utils.MyCallback.PermissionListener;
 import com.shenl.utils.R;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;

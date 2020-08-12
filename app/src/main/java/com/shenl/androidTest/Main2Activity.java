@@ -3,6 +3,7 @@ package com.shenl.androidTest;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
+import android.view.View;
 import android.widget.TextView;
 
 import com.shenl.utils.activity.BaseActivity;
@@ -44,9 +45,8 @@ public class Main2Activity extends BaseActivity {
         myAdapter myAdapter = new myAdapter(Main2Activity.this, list);
         sup_list.setAdapter(myAdapter);
 
-        TextView tv = new TextView(Main2Activity.this);
-        tv.setText("123123123123");
-        myAdapter.addHeaderView(tv);
+        View view = View.inflate(Main2Activity.this, R.layout.header, null);
+        myAdapter.addHeaderView(view);
 
         StopNewWorkReceiver();
     }

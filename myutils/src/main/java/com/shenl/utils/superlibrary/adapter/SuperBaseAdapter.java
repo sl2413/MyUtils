@@ -294,6 +294,7 @@ public abstract class SuperBaseAdapter<T> extends RecyclerView.Adapter<BaseViewH
     }
 
     public void addHeaderView(View header, int index) {
+//        header.setPadding(0,0,0,0);
         if (mHeaderLayout == null) {
             if (mCopyHeaderLayout == null) {
                 mHeaderLayout = new LinearLayout(header.getContext());
