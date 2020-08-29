@@ -27,7 +27,8 @@
             android:id="@+id/tv_net_retry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="网络异常，请稍候在试..."
+            android:text="网络异常，请稍候再试..."
+            android:layout_gravity="center"
             android:textColor="#C9C9C9" />
     </LinearLayout>
 

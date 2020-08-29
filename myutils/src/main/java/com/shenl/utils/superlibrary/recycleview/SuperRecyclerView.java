@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.shenl.utils.MyUtils.PageUtils;
 import com.shenl.utils.superlibrary.adapter.BaseViewHolder;
 import com.shenl.utils.superlibrary.adapter.SuperBaseAdapter;
 
@@ -33,6 +34,7 @@ public class SuperRecyclerView extends RecyclerView {
     private static final int TYPE_LOADMORE_FOOTER = 100001;
     private final AdapterDataObserver mDataObserver = new DataObserver();
     //private AppBarStateChangeListener.State appbarState = AppBarStateChangeListener.State.EXPANDED;
+    private int HeadCount = 0;
 
     public SuperRecyclerView(Context context) {
         this(context, null);
@@ -202,7 +204,7 @@ public class SuperRecyclerView extends RecyclerView {
                 final float deltaY = ev.getRawY() - mLastY;
                 mLastY = ev.getRawY();
                 if (isOnTop() && refreshEnabled
-                        /*&& appbarState == AppBarStateChangeListener.State.EXPANDED*/) {
+                    /*&& appbarState == AppBarStateChangeListener.State.EXPANDED*/) {
                     mRefreshHeader.onMove(deltaY / DRAG_RATE);
                     if (mRefreshHeader.getVisibleHeight() > 0
                             && mRefreshHeader.getState() < ArrowRefreshHeader.STATE_REFRESHING) {
@@ -213,7 +215,7 @@ public class SuperRecyclerView extends RecyclerView {
             default:
                 mLastY = -1; // reset
                 if (isOnTop() && refreshEnabled
-                        /*&& appbarState == AppBarStateChangeListener.State.EXPANDED*/) {
+                    /*&& appbarState == AppBarStateChangeListener.State.EXPANDED*/) {
                     if (mRefreshHeader.releaseAction()) {
                         if (mLoadingListener != null) {
                             mLoadingListener.onRefresh();
@@ -420,7 +422,7 @@ public class SuperRecyclerView extends RecyclerView {
                     public int getSpanSize(int position) {
                         return (isHeader(position) || isFooter(position)
                                 || isRefreshHeader(position))
-                                        ? gridManager.getSpanCount() : 1;
+                                ? gridManager.getSpanCount() : 1;
                     }
                 });
             }
@@ -439,8 +441,8 @@ public class SuperRecyclerView extends RecyclerView {
             if (lp != null
                     && lp instanceof StaggeredGridLayoutManager.LayoutParams
                     && (isHeader(holder.getLayoutPosition())
-                            || isRefreshHeader(holder.getLayoutPosition())
-                            || isFooter(holder.getLayoutPosition()))) {
+                    || isRefreshHeader(holder.getLayoutPosition())
+                    || isFooter(holder.getLayoutPosition()))) {
                 StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
                 p.setFullSpan(true);
             }

@@ -2,14 +2,12 @@ package com.shenl.androidTest;
 
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.TextView;
 
 import com.shenl.utils.activity.BaseActivity;
 import com.shenl.utils.superlibrary.adapter.BaseViewHolder;
 import com.shenl.utils.superlibrary.adapter.SuperBaseAdapter;
-import com.shenl.utils.superlibrary.recycleview.ProgressStyle;
 import com.shenl.utils.superlibrary.recycleview.SuperRecyclerView;
 
 import java.util.ArrayList;
@@ -33,22 +31,25 @@ public class Main2Activity extends BaseActivity {
     @Override
     protected void initData() {
         list = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
+        /*for (int i = 0; i < 10; i++) {
             list.add("条目" + i);
-        }
-//        LinearLayoutManager manager = new LinearLayoutManager(MainActivity.this);
-        GridLayoutManager manager = new GridLayoutManager(Main2Activity.this, 2);
+        }*/
+        LinearLayoutManager manager = new LinearLayoutManager(Main2Activity.this);
+//        GridLayoutManager manager = new GridLayoutManager(Main2Activity.this, 2);
         sup_list.setLayoutManager(manager);
-        sup_list.setRefreshEnabled(true);
-        sup_list.setLoadMoreEnabled(true);
-        sup_list.setRefreshProgressStyle(ProgressStyle.LineSpinFadeLoader);
-        myAdapter myAdapter = new myAdapter(Main2Activity.this, list);
-        sup_list.setAdapter(myAdapter);
+        sup_list.setRefreshEnabled(false);
+        sup_list.setLoadMoreEnabled(false);
+        View view1 = View.inflate(Main2Activity.this, R.layout.empty_data, null);
 
+
+        myAdapter myAdapter = new myAdapter(Main2Activity.this, list);
         View view = View.inflate(Main2Activity.this, R.layout.header, null);
         myAdapter.addHeaderView(view);
 
-        StopNewWorkReceiver();
+        sup_list.setAdapter(myAdapter);
+        sup_list.setEmptyView(view1);
+
+        //StopNewWorkReceiver();
     }
 
     @Override
